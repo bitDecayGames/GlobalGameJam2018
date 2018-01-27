@@ -91,13 +91,3 @@ func _ready():
 				s.set_opacity(0.4)
 				self.add_child(s)
 				spriteMap[row][col] = s
-				
-	print(spriteMap)
-				
-#for x in range(width):
-   # matrix[x]=[]
-   # for y in range(height):
-    #    matrix[x][y]=0
-	# Called every time the node is added to the scene.
-	# Initialization here
-	pass
