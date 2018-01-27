@@ -16,25 +16,32 @@ margin/bottom = 272.0
 script/script = ExtResource( 1 )
 value = 0
 
-[node name="DigitHundreds" parent="." instance=ExtResource( 2 )]
+[node name="DigitThousands" parent="." instance=ExtResource( 2 )]
 
 margin/left = 50.0
 margin/top = 120.0
 margin/right = 419.0
 margin/bottom = 807.0
 
-[node name="DigitTens" parent="." instance=ExtResource( 2 )]
+[node name="DigitHundreds" parent="." instance=ExtResource( 2 )]
 
 margin/left = 190.0
 margin/top = 120.0
 margin/right = 559.0
 margin/bottom = 807.0
 
+[node name="DigitTens" parent="." instance=ExtResource( 2 )]
+
+margin/left = 330.0
+margin/top = 120.0
+margin/right = 699.0
+margin/bottom = 807.0
+
 [node name="DigitOnes" parent="." instance=ExtResource( 2 )]
 
-margin/left = 340.0
+margin/left = 470.0
 margin/top = 120.0
-margin/right = 709.0
+margin/right = 839.0
 margin/bottom = 807.0
 
 
