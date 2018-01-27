@@ -18,6 +18,4 @@ stretch_mode = 0
 
 [node name="Scene" parent="." instance=ExtResource( 2 )]
 
-playerPos = Vector2( 2, 3 )
-
 
