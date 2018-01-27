@@ -38,7 +38,6 @@ func _draw():
 		
 func get_segment(letter):
 		var sprite = "Segment" + letter
-		print(sprite)
 		return get_node(sprite)
 		
 func show_segment(letter):

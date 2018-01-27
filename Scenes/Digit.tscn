@@ -20,7 +20,7 @@ margin/top = 112.0
 margin/right = 436.0
 margin/bottom = 799.0
 script/script = ExtResource( 1 )
-value = 6
+value = 0
 
 [node name="SegmentA" type="Sprite" parent="."]
 
