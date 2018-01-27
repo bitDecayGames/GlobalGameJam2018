@@ -9,6 +9,7 @@ var spriteMap=[]
 
 var lit = 1
 var off = 0.08
+var invisible = 0.08
 
 var left_action = "ui_left"
 var right_action = "ui_right"
@@ -22,7 +23,7 @@ var transformerItem = "transformer"
 var extinguisherItem = "extinguisher"
 
 export var playerPos = Vector2(1, 3)
-var playerState = noItem;
+var playerState = extinguisherItem;
 
 
 
@@ -72,13 +73,19 @@ func update_sprites():
 					if state == playerState:
 						spriteMap[playerPos.y][playerPos.x][state].set_opacity(lit)
 					else:
-						spriteMap[playerPos.y][playerPos.x][state].set_opacity(off)
+						spriteMap[playerPos.y][playerPos.x][state].set_opacity(invisible)
 			else:
 				for state in spriteMap[row][col]:
 					spriteMap[row][col][state].set_opacity(off)
 
 func _ready():
 	set_process(true)
+	
+	var backgroundLCDs = Sprite.new()
+	backgroundLCDs.set_texture(load("res://img/blankCells.png"))
+	backgroundLCDs.set_pos(Vector2(backgroundLCDs.get_texture().get_width()/2,backgroundLCDs.get_texture().get_height()/2))
+	backgroundLCDs.set_opacity(off)
+	self.add_child(backgroundLCDs)
 	
 	spriteMap = []
 	for row in range(playerMovement.size()):
@@ -92,14 +99,14 @@ func _ready():
 				load_sprite("player", row, col)
 								
 				
-				# Load transformer sprites
-				load_sprite("player", row, col)
+				# Load player w/ extinguisher sprites
+				load_sprite("extinguisher", row, col)
 
 func load_sprite(stateString, row, col):
 	var s = Sprite.new()
 	var spriteName = "res://img/%s/%s/%s.png" % [stateString, row, col]
 	s.set_texture(load(spriteName))
 	s.set_pos(Vector2(s.get_texture().get_width()/2,s.get_texture().get_height()/2))
-	s.set_opacity(off)
+	s.set_opacity(invisible)
 	self.add_child(s)
 	spriteMap[row][col][stateString] = s
