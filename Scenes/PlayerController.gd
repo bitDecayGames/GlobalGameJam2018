@@ -75,10 +75,11 @@ func _ready():
 				var s = Sprite.new()
 				s.set_texture(load("res://icon.png"))
 				s.set_pos(Vector2(x,y))
+				s.set_opacity(0.2)
 				self.add_child(s)
 			x += 150
 		y += 150
-		
+		4
 	
 			
 		
