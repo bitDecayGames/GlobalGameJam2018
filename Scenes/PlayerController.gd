@@ -1,25 +1,14 @@
 
-# class member variables go here, for example:
-# var a = 2
-# var b = "textvar"
 var playerMovement=[[0,0,0,0,0,0,0,0,0,0,0,0],
 					[0,0,1,1,0,1,1,0,1,1,0,0],
 					[0,0,1,1,0,1,1,0,1,1,0,0],
 					[0,1,1,1,1,1,1,1,1,1,1,0],
 					[0,0,0,0,0,0,0,0,0,0,0,0]]
-					
-					
-var birdMovement = [[0,0,0,0,0,0,0,0,0,0,0,0],
-					[0,0,1,1,0,1,1,0,1,1,0,0],
-					[0,0,1,1,0,1,1,0,1,1,0,0],
-					[0,1,1,1,1,1,1,1,1,1,1,0],
-					[0,0,0,0,0,0,0,0,0,0,0,0]]
+
 var spriteMap=[]
 
-var spacing = 150
-
 var lit = 1
-var dark = 0.08
+var off = 0.08
 
 var left_action = "ui_left"
 var right_action = "ui_right"
@@ -27,14 +16,20 @@ var up_action = "ui_up"
 var down_action = "ui_down"
 var action_action = "ui_select"
 
-var playerPos = Vector2(1, 3)
+# Player state strings
+var noItem = "player"
+var transformerItem = "transformer"
+var extinguisherItem = "extinguisher"
+
+export var playerPos = Vector2(1, 3)
+var playerState = noItem;
+
+
 
 var keyMap = {}
 
 func _process(delta):
 	var targetPos
-	#print("In process")
-	
 	if (Input.is_action_pressed(left_action) && !keyMap.has(left_action)):
 		keyMap[left_action] = true
 		targetPos = playerPos.x - 1
@@ -63,15 +58,9 @@ func _process(delta):
 	update_sprites()
 
 func _can_Move(targetX,targetY):
-	print("target position: X: ")
-	print( targetX)
-	print( " Y: " )
-	print( targetY)
 	if(playerMovement[targetY][targetX] != 0):
-		print("Movement Successful")
 		return true
 	else:
-		print("Movement Failed")
 		return false
 	
 
@@ -79,9 +68,14 @@ func update_sprites():
 	for row in range(playerMovement.size()):
 		for col in range(playerMovement[row].size()):
 			if playerPos.x == col && playerPos.y == row:
-				spriteMap[playerPos.y][playerPos.x].set_opacity(lit)
-			elif spriteMap[row][col] != null:
-				spriteMap[row][col].set_opacity(dark)
+				for state in spriteMap[row][col]:
+					if state == playerState:
+						spriteMap[playerPos.y][playerPos.x][state].set_opacity(lit)
+					else:
+						spriteMap[playerPos.y][playerPos.x][state].set_opacity(off)
+			else:
+				for state in spriteMap[row][col]:
+					spriteMap[row][col][state].set_opacity(off)
 
 func _ready():
 	set_process(true)
@@ -90,14 +84,22 @@ func _ready():
 	for row in range(playerMovement.size()):
 		spriteMap.append([])
 		for col in range(playerMovement[row].size()):
-			spriteMap[row].append(null)
+			spriteMap[row].append({})
 			#texture to playerMovement mapping
 			#TODO
 			if(playerMovement[row][col] != 0):
-				var s = Sprite.new()
-				var spriteName = "res://img/player/%s/%s.png" % [row, col]
-				s.set_texture(load(spriteName))
-				s.set_pos(Vector2(s.get_texture().get_width()/2,s.get_texture().get_height()/2))
-				s.set_opacity(dark)
-				self.add_child(s)
-				spriteMap[row][col] = s
+				# Load player sprite
+				load_sprite("player", row, col)
+								
+				
+				# Load transformer sprites
+				load_sprite("player", row, col)
+
+func load_sprite(stateString, row, col):
+	var s = Sprite.new()
+	var spriteName = "res://img/%s/%s/%s.png" % [stateString, row, col]
+	s.set_texture(load(spriteName))
+	s.set_pos(Vector2(s.get_texture().get_width()/2,s.get_texture().get_height()/2))
+	s.set_opacity(off)
+	self.add_child(s)
+	spriteMap[row][col][stateString] = s
