@@ -3,11 +3,17 @@
 # var a = 2
 # var b = "textvar"
 var playerMovement=[[0,0,0,0,0,0],
-			[0,0,4,4,0,0],
-			[0,0,3,3,0,0],
-			[0,1,2,1,2,0],
-			[0,0,0,0,0,0]]
+					[0,0,4,4,0,0],
+					[0,0,3,3,0,0],
+					[0,1,2,1,2,0],
+					[0,0,0,0,0,0]]
 			
+var left_action = "ui_left"
+var right_action = "ui_right"
+var up_action = "ui_up"
+var down_action = "ui_down"
+var action_action = "ui_select"
+
 var playerPos = Vector2(3,1)
 			
 var keyMap = {}
@@ -16,36 +22,32 @@ func _process(delta):
 	var targetPos
 	#print("In process")
 	
-	if (Input.is_action_pressed("ui_left") && !keyMap.has("LEFT")):
-		keyMap["LEFT"] = true
+	if (Input.is_action_pressed(left_action) && !keyMap.has(left_action)):
+		keyMap[left_action] = true
 		targetPos = playerPos.x - 1
 		if(_can_Move(targetPos,playerPos.y)):
 			playerPos.x = targetPos
-	elif (Input.is_action_pressed("ui_right") && !keyMap.has("RIGHT")):
-		keyMap["RIGHT"] = true
+	elif (Input.is_action_pressed(right_action) && !keyMap.has(right_action)):
+		keyMap[right_action] = true
 		targetPos = playerPos.x + 1
 		if(_can_Move(targetPos, playerPos.y)):
 			playerPos.x = targetPos
-	elif (Input.is_action_pressed("ui_up") && !keyMap.has("UP")):
-		keyMap["UP"] = true
+	elif (Input.is_action_pressed(up_action) && !keyMap.has(up_action)):
+		keyMap[up_action] = true
 		targetPos = playerPos.y + 1
 		if(_can_Move(playerPos.x, targetPos)):
 			playerPos.y = targetPos
-	elif (Input.is_action_pressed("ui_down") && !keyMap.has("DOWN")):
-		keyMap["DOWN"] = true
+	elif (Input.is_action_pressed(down_action) && !keyMap.has(down_action)):
+		keyMap[down_action] = true
 		targetPos = playerPos.y - 1
 		if(_can_Move(playerPos.x, targetPos)):
 			playerPos.y = targetPos
 			
 			
-	if !Input.is_action_pressed("ui_left"):
-		keyMap.erase("LEFT")
-	if !Input.is_action_pressed("ui_right"):
-		keyMap.erase("RIGHT")
-	if !Input.is_action_pressed("ui_up"):
-		keyMap.erase("UP")
-	if !Input.is_action_pressed("ui_down"):
-		keyMap.erase("DOWN")
+			
+	for action in keyMap:
+		if !Input.is_action_pressed(action):
+			keyMap.erase(action)
 
 func _can_Move(targetX,targetY):
 	print("target position: X: ")
