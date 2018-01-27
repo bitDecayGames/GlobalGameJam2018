@@ -2,15 +2,24 @@
 # class member variables go here, for example:
 # var a = 2
 # var b = "textvar"
-var playerMovement=[[0,0,0,0,0,0],
-					[0,0,4,4,0,0],
-					[0,0,3,3,0,0],
-					[0,1,2,1,2,0],
-					[0,0,0,0,0,0]]
+var playerMovement=[[0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,1,1,0,1,1,0,1,1,0,0],
+					[0,0,1,1,0,1,1,0,1,1,0,0],
+					[0,1,1,1,1,1,1,1,1,1,1,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0]]
 					
+					
+var birdMovement = [[0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,1,1,0,1,1,0,1,1,0,0],
+					[0,0,1,1,0,1,1,0,1,1,0,0],
+					[0,1,1,1,1,1,1,1,1,1,1,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0]]
 var spriteMap=[]
 
 var spacing = 150
+
+var lit = 1
+var dark = 0.08
 
 var left_action = "ui_left"
 var right_action = "ui_right"
@@ -70,9 +79,9 @@ func update_sprites():
 	for row in range(playerMovement.size()):
 		for col in range(playerMovement[row].size()):
 			if playerPos.x == col && playerPos.y == row:
-				spriteMap[playerPos.y][playerPos.x].set_opacity(1)
+				spriteMap[playerPos.y][playerPos.x].set_opacity(lit)
 			elif spriteMap[row][col] != null:
-				spriteMap[row][col].set_opacity(0.4)
+				spriteMap[row][col].set_opacity(dark)
 
 func _ready():
 	set_process(true)
@@ -86,8 +95,9 @@ func _ready():
 			#TODO
 			if(playerMovement[row][col] != 0):
 				var s = Sprite.new()
-				s.set_texture(load("res://icon.png"))
-				s.set_pos(Vector2(col * spacing, row * spacing))
-				s.set_opacity(0.4)
+				var spriteName = "res://img/player/%s/%s.png" % [row, col]
+				s.set_texture(load(spriteName))
+				s.set_pos(Vector2(s.get_texture().get_width()/2,s.get_texture().get_height()/2))
+				s.set_opacity(dark)
 				self.add_child(s)
 				spriteMap[row][col] = s
