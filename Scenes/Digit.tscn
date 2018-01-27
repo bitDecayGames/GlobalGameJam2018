@@ -1,0 +1,53 @@
+[gd_scene load_steps=9 format=1]
+
+[ext_resource path="res://Scenes/Digit.gd" type="Script" id=1]
+[ext_resource path="res://img/8/a.png" type="Texture" id=2]
+[ext_resource path="res://img/8/b.png" type="Texture" id=3]
+[ext_resource path="res://img/8/c.png" type="Texture" id=4]
+[ext_resource path="res://img/8/d.png" type="Texture" id=5]
+[ext_resource path="res://img/8/e.png" type="Texture" id=6]
+[ext_resource path="res://img/8/f.png" type="Texture" id=7]
+[ext_resource path="res://img/8/g.png" type="Texture" id=8]
+
+[node name="Digit" type="Control"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 67.0
+margin/top = 112.0
+margin/right = 436.0
+margin/bottom = 799.0
+script/script = ExtResource( 1 )
+value = 0
+
+[node name="SegmentA" type="Sprite" parent="."]
+
+texture = ExtResource( 2 )
+
+[node name="SegmentB" type="Sprite" parent="."]
+
+texture = ExtResource( 3 )
+
+[node name="SegmentC" type="Sprite" parent="."]
+
+texture = ExtResource( 4 )
+
+[node name="SegmentD" type="Sprite" parent="."]
+
+texture = ExtResource( 5 )
+
+[node name="SegmentE" type="Sprite" parent="."]
+
+texture = ExtResource( 6 )
+
+[node name="SegmentF" type="Sprite" parent="."]
+
+texture = ExtResource( 7 )
+
+[node name="SegmentG" type="Sprite" parent="."]
+
+texture = ExtResource( 8 )
+
+
