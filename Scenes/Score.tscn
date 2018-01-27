@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=1]
+
+[ext_resource path="res://Scenes/Score.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Digit.tscn" type="PackedScene" id=2]
+
+[node name="Score" type="Control"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 28.0
+margin/top = 21.0
+margin/right = 461.0
+margin/bottom = 272.0
+script/script = ExtResource( 1 )
+value = 0
+
+[node name="DigitThousands" parent="." instance=ExtResource( 2 )]
+
+margin/left = 50.0
+margin/top = 120.0
+margin/right = 419.0
+margin/bottom = 807.0
+
+[node name="DigitHundreds" parent="." instance=ExtResource( 2 )]
+
+margin/left = 190.0
+margin/top = 120.0
+margin/right = 559.0
+margin/bottom = 807.0
+
+[node name="DigitTens" parent="." instance=ExtResource( 2 )]
+
+margin/left = 330.0
+margin/top = 120.0
+margin/right = 699.0
+margin/bottom = 807.0
+
+[node name="DigitOnes" parent="." instance=ExtResource( 2 )]
+
+margin/left = 470.0
+margin/top = 120.0
+margin/right = 839.0
+margin/bottom = 807.0
+
+
