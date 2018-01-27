@@ -8,8 +8,8 @@ var playerMovement=[[0,0,0,0,0,0,0,0,0,0,0,0],
 var spriteMap=[]
 
 var lit = 1
-var off = 0.08
-var invisible = 0.08
+var low = 0.08
+var off = 0
 
 var left_action = "ui_left"
 var right_action = "ui_right"
@@ -23,9 +23,7 @@ var transformerItem = "transformer"
 var extinguisherItem = "extinguisher"
 
 export var playerPos = Vector2(1, 3)
-var playerState = extinguisherItem;
-
-
+var playerState = noItem;
 
 var keyMap = {}
 
@@ -73,7 +71,7 @@ func update_sprites():
 					if state == playerState:
 						spriteMap[playerPos.y][playerPos.x][state].set_opacity(lit)
 					else:
-						spriteMap[playerPos.y][playerPos.x][state].set_opacity(invisible)
+						spriteMap[playerPos.y][playerPos.x][state].set_opacity(off)
 			else:
 				for state in spriteMap[row][col]:
 					spriteMap[row][col][state].set_opacity(off)
@@ -87,6 +85,12 @@ func _ready():
 	backgroundLCDs.set_opacity(off)
 	self.add_child(backgroundLCDs)
 	
+	var extinguisherSpawn = Sprite.new()
+	extinguisherSpawn.set_texture(load("res://img/fireExtinguisher.png"))
+	extinguisherSpawn.set_pos(Vector2(extinguisherSpawn.get_texture().get_width()/2, extinguisherSpawn.get_texture().get_height()/2))
+	extinguisherSpawn.set_opacity(lit)
+	self.add_child(extinguisherSpawn)
+	
 	spriteMap = []
 	for row in range(playerMovement.size()):
 		spriteMap.append([])
@@ -97,16 +101,18 @@ func _ready():
 			if(playerMovement[row][col] != 0):
 				# Load player sprite
 				load_sprite("player", row, col)
-								
 				
 				# Load player w/ extinguisher sprites
 				load_sprite("extinguisher", row, col)
+				
+				# Load player w/ transformer sprites
+#				load_sprite("transformer", row, col)
 
 func load_sprite(stateString, row, col):
 	var s = Sprite.new()
 	var spriteName = "res://img/%s/%s/%s.png" % [stateString, row, col]
 	s.set_texture(load(spriteName))
 	s.set_pos(Vector2(s.get_texture().get_width()/2,s.get_texture().get_height()/2))
-	s.set_opacity(invisible)
+	s.set_opacity(off)
 	self.add_child(s)
 	spriteMap[row][col][stateString] = s
