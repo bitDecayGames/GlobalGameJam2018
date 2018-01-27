@@ -8,6 +8,7 @@ var onFire = 1 << 4
 var birdPoop = 1 << 5
 var transformerBlown = 1 << 6
 
+
 var up = Vector2(0, -1)
 var down = Vector2(0, 1)
 var left = Vector2(-1, 0)
@@ -38,7 +39,11 @@ var action_action = "ui_select"
 
 # Player state strings
 var noItem = "player"
+
+var transformer = Sprite.new()
 var transformerItem = "transformer"
+
+var extinguisher = Sprite.new()
 var extinguisherItem = "extinguisher"
 
 var playerPos = Vector2(3, groundRow)
@@ -77,12 +82,17 @@ func _process(delta):
 	# interactions
 	if playerMovement[playerPos.y][playerPos.x] & extinguisherSpawned:
 		playerState = extinguisherItem
+		#playerMovement[playerPos.y][playerPos.x] ^= extinguisherSpawned
+		extinguisher.set_opacity(off)
 	elif playerMovement[playerPos.y][playerPos.x] & transformerSpawned:
 		playerState = transformerItem
+		transformer.set_opacity(off)
 	elif playerMovement[playerPos.y][playerPos.x] & onFire:
 		print("Fire")
 
 	if nextMove != stay && previousPos.y == topOfPole:
+			extinguisher.set_opacity(lit)
+			transformer.set_opacity(lit)
 			playerState = noItem
 
 	update_sprites()
@@ -121,7 +131,7 @@ func _ready():
 	backgroundLCDs.set_opacity(low)
 	self.add_child(backgroundLCDs)
 	
-	var extinguisher = Sprite.new()
+	
 	extinguisher.set_texture(load("res://img/fireExtinguisher.png"))
 	extinguisher.set_pos(Vector2(extinguisher.get_texture().get_width()/2, extinguisher.get_texture().get_height()/2))
 	extinguisher.set_opacity(lit)
@@ -129,15 +139,14 @@ func _ready():
 	
 	playerMovement[4][1] |= extinguisherSpawned
 	
-	var transformer = Sprite.new()
-	transformer.set_texture(load("res://img/fireExtinguisher.png"))
+	transformer.set_texture(load("res://img/electricTransformer.png"))
 	transformer.set_pos(Vector2(transformer.get_texture().get_width()/2, transformer.get_texture().get_height()/2))
 	transformer.set_opacity(lit)
 	self.add_child(transformer)
 	
 	# set our item spawns
-	playerMovement[groundRow][10] |= extinguisherSpawned
-	playerMovement[groundRow][1] |= transformerSpawned
+	playerMovement[groundRow][1] |= extinguisherSpawned
+	playerMovement[groundRow][10] |= transformerSpawned
 	
 	# set our player spawn
 	playerMovement[playerPos.y][playerPos.x] |= playerPresent
@@ -157,7 +166,7 @@ func _ready():
 				load_sprite("extinguisher", row, col)
 				
 				# Load player w/ transformer sprites
-#				load_sprite("transformer", row, col)
+				load_sprite("transformer", row, col)
 
 func load_sprite(stateString, row, col):
 	var s = Sprite.new()
