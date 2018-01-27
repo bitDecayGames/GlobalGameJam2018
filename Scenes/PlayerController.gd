@@ -1,9 +1,29 @@
 
+# Board bit masks
+var moveableSpace = 1 << 0
+var playerPresent = 1 << 1
+var extinguisherSpawned = 1 << 2
+var transformerSpawned = 1 << 3
+var onFire = 1 << 4
+var birdPoop = 1 << 5
+var transformerBlown = 1 << 6
+
+
+var up = Vector2(0, -1)
+var down = Vector2(0, 1)
+var left = Vector2(-1, 0)
+var right = Vector2(1, 0)
+var stay = Vector2(0, 0)
+
 var playerMovement=[[0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,1,1,0,1,1,0,1,1,0,0],
 					[0,0,1,1,0,1,1,0,1,1,0,0],
 					[0,0,1,1,0,1,1,0,1,1,0,0],
 					[0,1,1,1,1,1,1,1,1,1,1,0],
 					[0,0,0,0,0,0,0,0,0,0,0,0]]
+					
+var groundRow = 4
+var topOfPole = 1
 
 var spriteMap=[]
 
@@ -19,45 +39,71 @@ var action_action = "ui_select"
 
 # Player state strings
 var noItem = "player"
+
+var transformer = Sprite.new()
 var transformerItem = "transformer"
+
+var extinguisher = Sprite.new()
 var extinguisherItem = "extinguisher"
 
-export var playerPos = Vector2(1, 3)
+var playerPos = Vector2(3, groundRow)
 var playerState = noItem;
 
 var keyMap = {}
 
 func _process(delta):
-	var targetPos
+	var targetDir = stay
+	var nextMove = stay
+	
 	if (Input.is_action_pressed(left_action) && !keyMap.has(left_action)):
 		keyMap[left_action] = true
-		targetPos = playerPos.x - 1
-		if(_can_Move(targetPos,playerPos.y)):
-			playerPos.x = targetPos
+		targetDir = left
 	elif (Input.is_action_pressed(right_action) && !keyMap.has(right_action)):
 		keyMap[right_action] = true
-		targetPos = playerPos.x + 1
-		if(_can_Move(targetPos, playerPos.y)):
-			playerPos.x = targetPos
+		targetDir = right
 	elif (Input.is_action_pressed(up_action) && !keyMap.has(up_action)):
 		keyMap[up_action] = true
-		targetPos = playerPos.y - 1
-		if(_can_Move(playerPos.x, targetPos)):
-			playerPos.y = targetPos
+		targetDir = up
 	elif (Input.is_action_pressed(down_action) && !keyMap.has(down_action)):
 		keyMap[down_action] = true
-		targetPos = playerPos.y + 1
-		if(_can_Move(playerPos.x, targetPos)):
-			playerPos.y = targetPos
+		targetDir = down
+
+	if(_can_Move(playerPos, targetDir)):
+			nextMove = targetDir
+
+	# Remove mask from leaving position
+	playerMovement[playerPos.y][playerPos.x] ^= playerPresent
+	var previousPos = playerPos
+	
+	playerPos += nextMove
+#	# Add mask to new position
+	playerMovement[playerPos.y][playerPos.x] |= playerPresent
 			
+	# interactions
+	if playerMovement[playerPos.y][playerPos.x] & extinguisherSpawned:
+		playerState = extinguisherItem
+		#playerMovement[playerPos.y][playerPos.x] ^= extinguisherSpawned
+		extinguisher.set_opacity(off)
+	elif playerMovement[playerPos.y][playerPos.x] & transformerSpawned:
+		playerState = transformerItem
+		transformer.set_opacity(off)
+	elif playerMovement[playerPos.y][playerPos.x] & onFire:
+		print("Fire")
+
+	if nextMove != stay && previousPos.y == topOfPole:
+			extinguisher.set_opacity(lit)
+			transformer.set_opacity(lit)
+			playerState = noItem
+
+	update_sprites()
+#	
 	for action in keyMap:
 		if !Input.is_action_pressed(action):
 			keyMap.erase(action)
-			
-	update_sprites()
 
-func _can_Move(targetX,targetY):
-	if(playerMovement[targetY][targetX] != 0):
+func _can_Move(currentPos,moveDir):
+	var destPos = Vector2(currentPos.x, currentPos.y) + moveDir
+	if(playerMovement[destPos.y][destPos.x] != 0):
 		return true
 	else:
 		return false
@@ -82,37 +128,56 @@ func _ready():
 	var backgroundLCDs = Sprite.new()
 	backgroundLCDs.set_texture(load("res://img/blankCells.png"))
 	backgroundLCDs.set_pos(Vector2(backgroundLCDs.get_texture().get_width()/2,backgroundLCDs.get_texture().get_height()/2))
-	backgroundLCDs.set_opacity(off)
+	backgroundLCDs.set_opacity(low)
 	self.add_child(backgroundLCDs)
 	
-	var extinguisherSpawn = Sprite.new()
-	extinguisherSpawn.set_texture(load("res://img/fireExtinguisher.png"))
-	extinguisherSpawn.set_pos(Vector2(extinguisherSpawn.get_texture().get_width()/2, extinguisherSpawn.get_texture().get_height()/2))
-	extinguisherSpawn.set_opacity(lit)
-	self.add_child(extinguisherSpawn)
+	
+	extinguisher.set_texture(load("res://img/fireExtinguisher.png"))
+	extinguisher.set_pos(Vector2(extinguisher.get_texture().get_width()/2, extinguisher.get_texture().get_height()/2))
+	extinguisher.set_opacity(lit)
+	self.add_child(extinguisher)
+	
+	playerMovement[4][1] |= extinguisherSpawned
+	
+	transformer.set_texture(load("res://img/electricTransformer.png"))
+	transformer.set_pos(Vector2(transformer.get_texture().get_width()/2, transformer.get_texture().get_height()/2))
+	transformer.set_opacity(lit)
+	self.add_child(transformer)
+	
+	# set our item spawns
+	playerMovement[groundRow][1] |= extinguisherSpawned
+	playerMovement[groundRow][10] |= transformerSpawned
+	
+	# set our player spawn
+	playerMovement[playerPos.y][playerPos.x] |= playerPresent
+	
+	print_board()
 	
 	spriteMap = []
 	for row in range(playerMovement.size()):
 		spriteMap.append([])
 		for col in range(playerMovement[row].size()):
 			spriteMap[row].append({})
-			#texture to playerMovement mapping
-			#TODO
 			if(playerMovement[row][col] != 0):
 				# Load player sprite
 				load_sprite("player", row, col)
 				
-				# Load player w/ extinguisher sprites
+#				# Load player w/ extinguisher sprites
 				load_sprite("extinguisher", row, col)
 				
 				# Load player w/ transformer sprites
-#				load_sprite("transformer", row, col)
+				load_sprite("transformer", row, col)
 
 func load_sprite(stateString, row, col):
 	var s = Sprite.new()
 	var spriteName = "res://img/%s/%s/%s.png" % [stateString, row, col]
+	print("Loading sprite: %s" % spriteName)
 	s.set_texture(load(spriteName))
 	s.set_pos(Vector2(s.get_texture().get_width()/2,s.get_texture().get_height()/2))
 	s.set_opacity(off)
 	self.add_child(s)
 	spriteMap[row][col][stateString] = s
+	
+func print_board():
+	for row in playerMovement:
+		print(row)
