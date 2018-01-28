@@ -2,8 +2,6 @@ const SPARK_IMAGE_DIRECTORY = "res://img/spark/"
 const SPARK_OFF_IMAGE_OPACITY = 0.4
 const TIME_UNTIL_NEXT_SPARK_SPAWN = 10
 
-
-
 var sparkImgList = []
 var spriteMap = []
 var sparkMap = []
