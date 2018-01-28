@@ -41,7 +41,6 @@ func load_the_sprite_map():
 		spriteMap.append([])
 		var s = Sprite.new()
 		s.set_texture(load(sparkImgList[i]))
-		s.set_pos(Vector2(s.get_texture().get_width()/2,s.get_texture().get_height()/2))
 		s.set_opacity(SPARK_OFF_IMAGE_OPACITY)
 		self.add_child(s)
 		spriteMap[i] = s
@@ -113,9 +112,9 @@ class Spark:
 	
 	func can_move_spark():
 		if(sparkStartingLeft):
-			return (sparkCurrentPos + 1) < SPARK_MAX_POS_RIGHT
+			return (sparkCurrentPos + 1) <= SPARK_MAX_POS_RIGHT
 		else:
-			return (sparkCurrentPos - 1) > SPARK_MAX_POS_LEFT
+			return (sparkCurrentPos - 1) >= SPARK_MAX_POS_LEFT
 	
 	func remove_this_spark():
 		spriteMap[sparkCurrentPos].set_opacity(SPARK_OFF_IMAGE_OPACITY)
