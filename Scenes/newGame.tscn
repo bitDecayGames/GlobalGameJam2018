@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=1]
+[gd_scene load_steps=22 format=1]
 
 [ext_resource path="res://img/background.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/PlayerController.gd" type="Script" id=2]
@@ -9,15 +9,17 @@
 [ext_resource path="res://sound/project-imported-sounds/death.smp" type="Sample" id=7]
 [ext_resource path="res://sound/project-imported-sounds/extinguish.smp" type="Sample" id=8]
 [ext_resource path="res://sound/project-imported-sounds/fire.smp" type="Sample" id=9]
-[ext_resource path="res://sound/project-imported-sounds/pause.smp" type="Sample" id=10]
-[ext_resource path="res://sound/project-imported-sounds/pickup.smp" type="Sample" id=11]
-[ext_resource path="res://sound/project-imported-sounds/plugin.smp" type="Sample" id=12]
-[ext_resource path="res://sound/project-imported-sounds/takedamage.smp" type="Sample" id=13]
-[ext_resource path="res://sound/project-imported-sounds/unpause.smp" type="Sample" id=14]
-[ext_resource path="res://sound/project-imported-sounds/walk1.smp" type="Sample" id=15]
-[ext_resource path="res://sound/project-imported-sounds/walk2.smp" type="Sample" id=16]
-[ext_resource path="res://sound/music/main theme.ogg" type="AudioStream" id=17]
-[ext_resource path="res://sound/music/music-player.gd" type="Script" id=18]
+[ext_resource path="res://sound/project-imported-sounds/firenowhoosh.smp" type="Sample" id=10]
+[ext_resource path="res://sound/project-imported-sounds/pause.smp" type="Sample" id=11]
+[ext_resource path="res://sound/project-imported-sounds/pickup.smp" type="Sample" id=12]
+[ext_resource path="res://sound/project-imported-sounds/plugin.smp" type="Sample" id=13]
+[ext_resource path="res://sound/project-imported-sounds/takedamage.smp" type="Sample" id=14]
+[ext_resource path="res://sound/project-imported-sounds/unpause.smp" type="Sample" id=15]
+[ext_resource path="res://sound/project-imported-sounds/walk1.smp" type="Sample" id=16]
+[ext_resource path="res://sound/project-imported-sounds/walk2.smp" type="Sample" id=17]
+[ext_resource path="res://sound/music/main theme.ogg" type="AudioStream" id=18]
+[ext_resource path="res://sound/music/music-player.gd" type="Script" id=19]
+[ext_resource path="res://sound/music/fire-sfx.ogg" type="AudioStream" id=20]
 
 [sub_resource type="SampleLibrary" id=1]
 
@@ -40,52 +42,58 @@ samples/extinguish = {
 "sample": ExtResource( 8 )
 }
 samples/fire = {
-"db": -25.0,
+"db": -30.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 9 )
+}
+samples/firenowhoosh = {
+"db": -30.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 10 )
 }
 samples/pause = {
 "db": -25.0,
 "pitch": 1.0,
 "priority": 0,
-"sample": ExtResource( 10 )
+"sample": ExtResource( 11 )
 }
 samples/pickup = {
 "db": -10.0,
 "pitch": 1.0,
 "priority": 0,
-"sample": ExtResource( 11 )
+"sample": ExtResource( 12 )
 }
 samples/plugin = {
 "db": -25.0,
 "pitch": 1.0,
 "priority": 0,
-"sample": ExtResource( 12 )
+"sample": ExtResource( 13 )
 }
 samples/takedamage = {
 "db": -25.0,
 "pitch": 1.0,
 "priority": 0,
-"sample": ExtResource( 13 )
+"sample": ExtResource( 14 )
 }
 samples/unpause = {
 "db": -25.0,
 "pitch": 1.0,
 "priority": 0,
-"sample": ExtResource( 14 )
+"sample": ExtResource( 15 )
 }
 samples/walk1 = {
 "db": -40.0,
 "pitch": 1.0,
 "priority": 0,
-"sample": ExtResource( 15 )
+"sample": ExtResource( 16 )
 }
 samples/walk2 = {
 "db": -40.0,
 "pitch": 1.0,
 "priority": 0,
-"sample": ExtResource( 16 )
+"sample": ExtResource( 17 )
 }
 
 [node name="Node2D" type="Node2D"]
@@ -109,7 +117,7 @@ centered = false
 
 [node name="SamplePlayer" type="SamplePlayer" parent="."]
 
-config/polyphony = 4
+config/polyphony = 10
 config/samples = SubResource( 1 )
 default/volume_db = 0.0
 default/pitch_scale = 1.0
@@ -126,7 +134,7 @@ default/chorus_send = 0.0
 
 [node name="StreamPlayer" type="StreamPlayer" parent="."]
 
-stream/stream = ExtResource( 17 )
+stream/stream = ExtResource( 18 )
 stream/play = false
 stream/loop = false
 stream/volume_db = 0.0
@@ -134,6 +142,17 @@ stream/autoplay = false
 stream/paused = false
 stream/loop_restart_time = 0.0
 stream/buffering_ms = 500
-script/script = ExtResource( 18 )
+script/script = ExtResource( 19 )
+
+[node name="StreamPlayerFire" type="StreamPlayer" parent="."]
+
+stream/stream = ExtResource( 20 )
+stream/play = false
+stream/loop = false
+stream/volume_db = 0.0
+stream/autoplay = false
+stream/paused = false
+stream/loop_restart_time = 0.0
+stream/buffering_ms = 500
 
 
