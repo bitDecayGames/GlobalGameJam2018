@@ -247,7 +247,7 @@ class transformerBox:
 	
 	func _init(position, transformerNum, playerMovement, transformerBlown, transformerOnFire):
 		fireTime = 0.5
-		fireToggle = true
+		fireToggle = 0
 		pos = position
 		blownTransformer = transformerBlown
 		fireTransformer = transformerOnFire
@@ -279,14 +279,17 @@ class transformerBox:
 			if((playerMap[pos.y][pos.x] & fireTransformer) != 0):
 				fireTime -= delta
 				if fireTime < 0:
-					if fireToggle:
+					if fireToggle % 3 == 0:
+						self.largeFireSprite.set_opacity(0)
+						self.smallFireSprite.set_opacity(0)
+					elif fireToggle % 3 == 1:
 						self.largeFireSprite.set_opacity(0)
 						self.smallFireSprite.set_opacity(1)
 					else:
 						self.largeFireSprite.set_opacity(1)
 						self.smallFireSprite.set_opacity(0)
 					fireTime = 0.5
-					fireToggle = !fireToggle
+					fireToggle = (fireToggle + 1) % 3
 			else:
 				self.largeFireSprite.set_opacity(0)
 				self.smallFireSprite.set_opacity(0)
