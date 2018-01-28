@@ -1,18 +1,19 @@
-[gd_scene load_steps=16 format=1]
+[gd_scene load_steps=17 format=1]
 
 [ext_resource path="res://img/background.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/LukeTestScene.tscn" type="PackedScene" id=2]
 [ext_resource path="res://sound/music/main theme.ogg" type="AudioStream" id=3]
 [ext_resource path="res://sound/music/music-player.gd" type="Script" id=4]
 [ext_resource path="res://sound/project-imported-sounds/death.smp" type="Sample" id=5]
-[ext_resource path="res://sound/project-imported-sounds/fire.smp" type="Sample" id=6]
-[ext_resource path="res://sound/project-imported-sounds/pause.smp" type="Sample" id=7]
-[ext_resource path="res://sound/project-imported-sounds/pickup.smp" type="Sample" id=8]
-[ext_resource path="res://sound/project-imported-sounds/takedamage.smp" type="Sample" id=9]
-[ext_resource path="res://sound/project-imported-sounds/unpause.smp" type="Sample" id=10]
-[ext_resource path="res://sound/project-imported-sounds/walk1.smp" type="Sample" id=11]
-[ext_resource path="res://sound/project-imported-sounds/walk2.smp" type="Sample" id=12]
-[ext_resource path="res://img/bezel.png" type="Texture" id=13]
+[ext_resource path="res://sound/project-imported-sounds/extinguish.smp" type="Sample" id=6]
+[ext_resource path="res://sound/project-imported-sounds/fire.smp" type="Sample" id=7]
+[ext_resource path="res://sound/project-imported-sounds/pause.smp" type="Sample" id=8]
+[ext_resource path="res://sound/project-imported-sounds/pickup.smp" type="Sample" id=9]
+[ext_resource path="res://sound/project-imported-sounds/plugin.smp" type="Sample" id=10]
+[ext_resource path="res://sound/project-imported-sounds/takedamage.smp" type="Sample" id=11]
+[ext_resource path="res://sound/project-imported-sounds/unpause.smp" type="Sample" id=12]
+[ext_resource path="res://sound/project-imported-sounds/walk1.smp" type="Sample" id=13]
+[ext_resource path="res://sound/project-imported-sounds/walk2.smp" type="Sample" id=14]
 
 [sub_resource type="Sample" id=1]
 
@@ -44,47 +45,59 @@ samples/death = {
 "priority": 0,
 "sample": ExtResource( 5 )
 }
-samples/fire = {
-"db": -25.0,
+samples/extinguish = {
+"db": -15.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 6 )
 }
-samples/pause = {
+samples/fire = {
 "db": -25.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 7 )
 }
-samples/pickup = {
+samples/pause = {
 "db": -25.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 8 )
 }
-samples/takedamage = {
+samples/pickup = {
 "db": -25.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 9 )
 }
-samples/unpause = {
+samples/plugin = {
 "db": -25.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 10 )
 }
+samples/takedamage = {
+"db": -25.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 11 )
+}
+samples/unpause = {
+"db": -25.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 12 )
+}
 samples/walk1 = {
 "db": -40.0,
 "pitch": 1.0,
 "priority": 0,
-"sample": ExtResource( 11 )
+"sample": ExtResource( 13 )
 }
 samples/walk2 = {
 "db": -40.0,
 "pitch": 1.0,
 "priority": 0,
-"sample": ExtResource( 12 )
+"sample": ExtResource( 14 )
 }
 
 [node name="TextureFrame" type="TextureFrame"]
@@ -93,10 +106,10 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 308.0
-margin/top = 55.0
-margin/right = 1291.0
-margin/bottom = 710.0
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 40.0
+margin/bottom = 40.0
 texture = ExtResource( 1 )
 stretch_mode = 0
 
@@ -116,7 +129,7 @@ script/script = ExtResource( 4 )
 
 [node name="SamplePlayer" type="SamplePlayer" parent="."]
 
-config/polyphony = 1
+config/polyphony = 4
 config/samples = SubResource( 2 )
 default/volume_db = 0.0
 default/pitch_scale = 1.0
@@ -130,10 +143,5 @@ default/filter/gain = 1.0
 default/reverb_room = 2
 default/reverb_send = 0.0
 default/chorus_send = 0.0
-
-[node name="bezel" type="Sprite" parent="."]
-
-transform/pos = Vector2( 494.355, 395.886 )
-texture = ExtResource( 13 )
 
 
