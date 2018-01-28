@@ -1,5 +1,6 @@
 # Sound
 var soundMaker
+var playWalkNoiseOne = true
 
 # Board bit masks
 var moveableSpace = 1 << 0
@@ -58,24 +59,22 @@ func _process(delta):
 	var nextMove = stay
 	
 	if (Input.is_action_pressed(left_action) && !keyMap.has(left_action)):
-		soundMaker.play("walk2")
 		keyMap[left_action] = true
 		targetDir = left
 	elif (Input.is_action_pressed(right_action) && !keyMap.has(right_action)):
-		soundMaker.play("walk1")
 		keyMap[right_action] = true
 		targetDir = right
 	elif (Input.is_action_pressed(up_action) && !keyMap.has(up_action)):
-		soundMaker.play("walk2")
 		keyMap[up_action] = true
 		targetDir = up
 	elif (Input.is_action_pressed(down_action) && !keyMap.has(down_action)):
-		soundMaker.play("walk1")
 		keyMap[down_action] = true
 		targetDir = down
 
 	if(_can_Move(playerPos, targetDir)):
-			nextMove = targetDir
+		nextMove = targetDir
+		if targetDir != stay:
+			play_walk_sound()
 
 	# Remove mask from leaving position
 	playerMovement[playerPos.y][playerPos.x] ^= playerPresent
@@ -114,6 +113,13 @@ func _can_Move(currentPos,moveDir):
 	else:
 		return false
 	
+
+func play_walk_sound():
+	if playWalkNoiseOne:
+		soundMaker.play("walk1")
+	else:
+		soundMaker.play("walk2")
+	playWalkNoiseOne = not playWalkNoiseOne
 
 func update_sprites():
 	for row in range(playerMovement.size()):

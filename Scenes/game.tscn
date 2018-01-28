@@ -44,43 +44,43 @@ samples/death = {
 "sample": ExtResource( 5 )
 }
 samples/fire = {
-"db": -18.0,
+"db": -25.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 6 )
 }
 samples/pause = {
-"db": -18.0,
+"db": -25.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 7 )
 }
 samples/pickup = {
-"db": -18.0,
+"db": -25.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 8 )
 }
 samples/takedamage = {
-"db": -18.0,
+"db": -25.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 9 )
 }
 samples/unpause = {
-"db": -18.0,
+"db": -25.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 10 )
 }
 samples/walk1 = {
-"db": -18.0,
+"db": -40.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 11 )
 }
 samples/walk2 = {
-"db": -18.0,
+"db": -40.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 12 )
