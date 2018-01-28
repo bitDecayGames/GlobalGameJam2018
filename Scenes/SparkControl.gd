@@ -35,6 +35,7 @@ func _process(delta):
 		create_spark()
 	
 	for spark in sparkMap:
+		spriteMap[spark.sparkCurrentPos].set_opacity(1)
 		if(spark.update_spark_pos(delta)):
 			spark.remove_this_spark()
 			sparkMap.erase(spark)
