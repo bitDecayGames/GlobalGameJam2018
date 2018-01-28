@@ -18,7 +18,7 @@ currentPosition = 3
 currentWingDirection = "down"
 currentFacing = "right"
 poopRate = 0.2
-landRate = 1
+landRate = 0.5
 currentPerchState = ""
 currentPerchPosition = ""
 

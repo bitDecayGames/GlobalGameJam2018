@@ -16,7 +16,7 @@ export var currentPosition = 0
 export var currentWingDirection = 'up'
 export var currentFacing = 'right'
 export var poopRate = 0.20
-export var landRate = 1;
+export var landRate = .5;
 export var currentPerchState = '';
 export var currentPerchPosition = ''
 
@@ -45,7 +45,9 @@ func _process(delta):
 				peckCount += 1
 				if peckCount > 3:
 					peckCount = 0
+					break_transformer()
 					take_off()
+
 			timeSinceLastPeck = 0
 			
 			update()
@@ -134,8 +136,18 @@ func take_off():
 	currentPerchState = null
 	currentPerchPosition = null
 	
-	
-	
+func break_transformer():
+	var perchToCol = {
+		1: 2,
+		2: 3,
+		3: 5,
+		4: 6,
+		5: 8,
+		6: 9
+	}
+	var globals = get_node("/root/global") 
+	var map = globals.get("playerMovement")
+	map[1][perchToCol[currentPerchPosition]] |= globals.get("transformerBlown")
 
 func toggle_wings():
 	if currentWingDirection == 'up':
