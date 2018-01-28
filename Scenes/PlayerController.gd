@@ -215,7 +215,6 @@ func load_sprite(stateString, row, col):
 	var spriteName = "res://img/%s/%s/%s.png" % [stateString, row, col]
 	print("Loading sprite: %s" % spriteName)
 	s.set_texture(load(spriteName))
-	s.set_pos(parentOffsetVector)
 	s.set_opacity(off)
 	self.add_child(s)
 	spriteMap[row][col][stateString] = s
