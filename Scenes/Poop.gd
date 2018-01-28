@@ -45,13 +45,14 @@ class SingleTurd:
 		var row = getMapForDepth(self.depth)
 		if row == -1:
 			return
-		self.map[row][column] ^= self.turdMask
+		if(self.map[row][column] & self.turdMask):
+			self.map[row][column] ^= self.turdMask
 		
 	func set_poop_flag():
 		var row = getMapForDepth(self.depth)
 		if row == -1 || row > 9:
 			return
-		self.map[row][column] |= self.turdMask
+		self.map[row][column+1] |= self.turdMask
 		
 	func update_sprites():
 		for row in range(10):
