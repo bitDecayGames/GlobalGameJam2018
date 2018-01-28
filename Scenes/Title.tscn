@@ -1,12 +1,13 @@
-[gd_scene load_steps=9 format=1]
+[gd_scene load_steps=10 format=1]
 
-[ext_resource path="res://font/visitor.ttf.fnt" type="BitmapFont" id=1]
-[ext_resource path="res://Scenes/Title_btn_start.gd" type="Script" id=2]
-[ext_resource path="res://Scenes/Title_btn_credits.gd" type="Script" id=3]
-[ext_resource path="res://Scenes/Title_btn_gameover.gd" type="Script" id=4]
-[ext_resource path="res://sound/music/title.ogg" type="AudioStream" id=5]
-[ext_resource path="res://sound/music/music-player.gd" type="Script" id=6]
-[ext_resource path="res://sound/project-imported-sounds/hovermenu.smp" type="Sample" id=7]
+[ext_resource path="res://img/title.png" type="Texture" id=1]
+[ext_resource path="res://font/visitor.ttf.fnt" type="BitmapFont" id=2]
+[ext_resource path="res://Scenes/Title_btn_start.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/Title_btn_credits.gd" type="Script" id=4]
+[ext_resource path="res://Scenes/Title_btn_gameover.gd" type="Script" id=5]
+[ext_resource path="res://sound/music/title.ogg" type="AudioStream" id=6]
+[ext_resource path="res://sound/music/music-player.gd" type="Script" id=7]
+[ext_resource path="res://sound/project-imported-sounds/hovermenu.smp" type="Sample" id=8]
 
 [sub_resource type="SampleLibrary" id=1]
 
@@ -14,10 +15,24 @@ samples/hovermenu = {
 "db": -15.0,
 "pitch": 1.0,
 "priority": 0,
-"sample": ExtResource( 7 )
+"sample": ExtResource( 8 )
 }
 
 [node name="dummyNode_titleScreen" type="Node"]
+
+[node name="TextureFrame" type="TextureFrame" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 1600.0
+margin/bottom = 900.0
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 0
 
 [node name="ButtonsContainer" type="VBoxContainer" parent="."]
 
@@ -25,10 +40,10 @@ focus/ignore_mouse = false
 focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 599.0
-margin/top = 546.0
-margin/right = 1024.0
-margin/bottom = 791.0
+margin/left = 69.0
+margin/top = 106.0
+margin/right = 494.0
+margin/bottom = 368.0
 alignment = 0
 
 [node name="Start" type="Button" parent="ButtonsContainer"]
@@ -40,14 +55,14 @@ size_flags/vertical = 3
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 425.0
-margin/bottom = 79.0
-custom_fonts/font = ExtResource( 1 )
+margin/bottom = 84.0
+custom_fonts/font = ExtResource( 2 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 text = "Start"
 flat = false
-script/script = ExtResource( 2 )
+script/script = ExtResource( 3 )
 
 [node name="Credit" type="Button" parent="ButtonsContainer"]
 
@@ -56,16 +71,16 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 3
 margin/left = 0.0
-margin/top = 83.0
+margin/top = 88.0
 margin/right = 425.0
-margin/bottom = 162.0
-custom_fonts/font = ExtResource( 1 )
+margin/bottom = 172.0
+custom_fonts/font = ExtResource( 2 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-text = "Credit"
+text = "Credits"
 flat = false
-script/script = ExtResource( 3 )
+script/script = ExtResource( 4 )
 
 [node name="Gameover" type="Button" parent="ButtonsContainer"]
 
@@ -74,20 +89,20 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 3
 margin/left = 0.0
-margin/top = 166.0
+margin/top = 176.0
 margin/right = 425.0
-margin/bottom = 245.0
-custom_fonts/font = ExtResource( 1 )
+margin/bottom = 262.0
+custom_fonts/font = ExtResource( 2 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 text = "Gameover"
 flat = false
-script/script = ExtResource( 4 )
+script/script = ExtResource( 5 )
 
 [node name="StreamPlayer" type="StreamPlayer" parent="."]
 
-stream/stream = ExtResource( 5 )
+stream/stream = ExtResource( 6 )
 stream/play = false
 stream/loop = false
 stream/volume_db = 0.0
@@ -95,7 +110,7 @@ stream/autoplay = false
 stream/paused = false
 stream/loop_restart_time = 0.0
 stream/buffering_ms = 500
-script/script = ExtResource( 6 )
+script/script = ExtResource( 7 )
 
 [node name="SamplePlayer" type="SamplePlayer" parent="."]
 

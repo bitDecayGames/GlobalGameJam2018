@@ -160,7 +160,7 @@ func checkDeath():
 	if(transformerDeath || fireDeath || poopDeath):
 		if fireDeath:
 			soundMaker.play("fireburst", false)
-		if poopDeath:
+		elif poopDeath:
 			soundMaker.play("splat", false)
 		get_node("DeathNode").die("aek")
 		
