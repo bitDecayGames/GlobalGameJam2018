@@ -63,6 +63,8 @@ var poopDeath = false
 var keyMap = {}
 
 func _process(delta):
+  transformerDeathCheck()
+  poopDeathCheck()
   checkDeath()
 
   var targetDir = stay
@@ -157,6 +159,18 @@ func _can_Move(currentPos,moveDir):
 func checkDeath():
 	if(transformerDeath || fireDeath || poopDeath):
 		get_node("DeathNode").die("aek")
+		
+func transformerDeathCheck():
+	var transformerAllDead = true
+	for tran in transformerList:
+		if(!playerMovement[tran.pos.y][tran.pos.x] & transformerBlown):
+			transformerAllDead = false
+	transformerDeath = transformerAllDead
+	
+func poopDeathCheck():
+	if(playerMovement[playerPos.y][playerPos.x] & birdPoop):
+		playerMovement[playerPos.y][playerPos.x] ^= birdPoop
+		poopDeath = true
 
 func play_walk_sound():
   if playWalkNoiseOne:
