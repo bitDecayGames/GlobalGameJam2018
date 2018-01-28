@@ -18,7 +18,6 @@ func _process(delta):
 func die(playerSpriteToBlink):
 	get_tree().set_pause(true)
 	print("paus has happened")
-	soundMaker.play("fireburst")
 	
 	var t = Timer.new()
 	t.set_wait_time(3)

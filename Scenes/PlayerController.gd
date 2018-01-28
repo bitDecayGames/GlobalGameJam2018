@@ -158,6 +158,8 @@ func _can_Move(currentPos,moveDir):
 
 func checkDeath():
 	if(transformerDeath || fireDeath || poopDeath):
+		if fireDeath:
+			soundMaker.play("fireburst", false)
 		get_node("DeathNode").die("aek")
 		
 func transformerDeathCheck():

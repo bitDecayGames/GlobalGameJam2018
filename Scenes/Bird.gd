@@ -8,6 +8,8 @@ var spriteMap = []
 var timeSinceLastMove = 0
 var timeSinceLastFlap = 0
 
+var soundMaker
+
 export var currentPosition = 0
 export var currentWingDirection = 'up'
 export var currentFacing = 'right'
@@ -42,7 +44,8 @@ func _process(delta):
 		update()
 	
 
-func _ready():
+func _ready():	
+	soundMaker = get_tree().get_root().get_node("/root/Node2D/SamplePlayer")
 	spriteMap = []
 	for position in range(0, 10):
 		spriteMap.append({})
@@ -87,3 +90,4 @@ func move():
 func poop():
 	var poopNode = get_tree().get_root().get_node("/root/Node2D/playField/Poop")
 	poopNode.drop_deuce(currentPosition, 0.3)
+	soundMaker.play("poop")
