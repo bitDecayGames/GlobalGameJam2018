@@ -106,9 +106,14 @@ func _process(delta):
 
 	if nextMove == up && playerPos.y == topOfPole && playerState == transformerItem:
 		soundMaker.play("plugin", false)
+		if(playerMovement[playerPos.y][playerPos.x] & transformerBlown):
+			playerMovement[playerPos.y][playerPos.x] ^= transformerBlown 
+			
 		pass
 	if nextMove == up && playerPos.y == topOfPole && playerState == extinguisherItem:
 		soundMaker.play("extinguish", false)
+		if(playerMovement[playerPos.y][playerPos.x] & onFire):
+			playerMovement[playerPos.y][playerPos.x] ^= onFire
 		pass
 
 	if nextMove != stay && previousPos.y == topOfPole:
@@ -193,6 +198,7 @@ func _ready():
 	playerMovement[1][3] |= transformerBlown
 	playerMovement[1][5] |= transformerBlown
 	playerMovement[1][6] |= transformerBlown
+	playerMovement[1][6] |= onFire
 	
 	for trans in transformerList:
 		for sprite in trans.spriteGetter():
