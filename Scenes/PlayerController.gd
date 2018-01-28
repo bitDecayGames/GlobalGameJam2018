@@ -18,12 +18,7 @@ var left = Vector2(-1, 0)
 var right = Vector2(1, 0)
 var stay = Vector2(0, 0)
 
-var playerMovement=[[0,0,0,0,0,0,0,0,0,0,0,0],
-					[0,0,1,1,0,1,1,0,1,1,0,0],
-					[0,0,1,1,0,1,1,0,1,1,0,0],
-					[0,0,1,1,0,1,1,0,1,1,0,0],
-					[0,1,1,1,1,1,1,1,1,1,1,0],
-					[0,0,0,0,0,0,0,0,0,0,0,0]]
+var playerMovement
 					
 var groundRow = 4
 var topOfPole = 1
@@ -160,6 +155,8 @@ func update_sprites(delta):
 		trans._update(delta)
 
 func _ready():
+	playerMovement = get_node("/root/global").get("playerMovement")
+	
 	set_process(true)
 	
 	soundMaker = get_tree().get_root().get_node("/root/Node2D/SamplePlayer")
