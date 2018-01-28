@@ -17,5 +17,9 @@ script/script = ExtResource( 1 )
 currentPosition = 3
 currentWingDirection = "down"
 currentFacing = "right"
+poopRate = 0.2
+landRate = 1
+currentPerchState = ""
+currentPerchPosition = ""
 
 
