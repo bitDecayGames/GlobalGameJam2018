@@ -17,6 +17,7 @@ var transformerBlown = 1 << 6
 
 var difficultyMod = 1.0
 var difficultyIncrease = .01
+var timeLightningHit = 0
 
 var up = Vector2(0, -1)
 var down = Vector2(0, 1)
@@ -32,7 +33,6 @@ var topOfPole = 1
 var spriteMap=[]
 
 var transformerList = []
-
 var lit = 1
 var low = 0.08
 var off = 0
@@ -58,11 +58,13 @@ var scoreControl
 
 var transformerDeath = false
 const TRANSFORMER_DEATH_SPRITE = ""
+const LIGHTNING_IMAGE_DIRECTORY = "res://img/lightning/"
 
 const FLAMBE_IMAGE_DIRECTORY = "res://img/flambe/"
 var fireDeath = false
 var fireDeathSpriteList = []
-
+var lightningSpriteList = []
+var lightningToTransformer = { 0:2, 1:3, 2:5, 3:6, 4:8, 5:8 }
 var poopDeath = false
 const POOP_DEATH_SPRITE = ""
 
@@ -125,8 +127,6 @@ func _process(delta):
       increment_score()
       increaseDifficulty(difficultyIncrease)
 
-    pass
-
   if nextMove == up && playerPos.y == topOfPole && playerState == extinguisherItem:
     soundMaker.play("extinguish", false)
     if(playerMovement[playerPos.y][playerPos.x] & onFire):
@@ -149,11 +149,27 @@ func _process(delta):
       transformer.set_opacity(lit)
       playerState = noItem
 
+  lightningHits(delta)
   update_sprites(delta)
 #
   for action in keyMap:
     if !Input.is_action_pressed(action):
       keyMap.erase(action)
+
+func lightningHits(delta):
+	if timeLightningHit > 0:
+		timeLightningHit -= delta
+	else:
+		for i in range(lightningSpriteList.size()):
+			lightningSpriteList[i].set_opacity(0)
+		var chance = randf()
+		if chance > 0.995:
+			timeLightningHit = 0.5
+			var transformerNumber = randi() % 6
+			lightningSpriteList[transformerNumber].set_opacity(1)
+			playerMovement[1][lightningToTransformer[transformerNumber]] |= transformerBlown
+			playerMovement[1][lightningToTransformer[transformerNumber]] |= onFire
+			print(playerMovement)
 
 func _can_Move(currentPos,moveDir):
   var destPos = Vector2(currentPos.x, currentPos.y) + moveDir
@@ -226,6 +242,17 @@ func update_sprites(delta):
   for trans in transformerList:
     trans._update(delta)
 
+func load_lightning_sprites():
+  var lightningImgList = get_node("SparkControlNode").list_files_in_directory(LIGHTNING_IMAGE_DIRECTORY)
+  lightningSpriteList = []
+  for i in range(lightningImgList.size()):
+    lightningSpriteList.append([])
+    var s = Sprite.new()
+    s.set_texture(load(lightningImgList[i]))
+    s.set_opacity(low)
+    self.add_child(s)
+    lightningSpriteList[i] = s
+
 func load_flame_death_sprites():
   var flameDeathImgList = get_node("SparkControlNode").list_files_in_directory(FLAMBE_IMAGE_DIRECTORY)
   fireDeathSpriteList = []
@@ -270,6 +297,8 @@ func _ready():
   # set our player spawn
   playerMovement[playerPos.y][playerPos.x] |= playerPresent
 
+  load_lightning_sprites()
+
   transformerList.append(transformerBox.new(Vector2(2,1),1,playerMovement, transformerBlown, onFire))
   transformerList.append(transformerBox.new(Vector2(3,1),2,playerMovement, transformerBlown, onFire))
   transformerList.append(transformerBox.new(Vector2(5,1),3,playerMovement, transformerBlown, onFire))
@@ -307,7 +336,6 @@ func _ready():
         load_sprite("transformer", row, col)
 
   load_flame_death_sprites()
-
 
 func load_sprite(stateString, row, col):
   var s = Sprite.new()
