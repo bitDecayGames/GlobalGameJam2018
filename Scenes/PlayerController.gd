@@ -64,8 +64,14 @@ var scoreControl
 var gameOver
 
 var transformerDeath = false
+const TRANSFORMER_DEATH_SPRITE = ""
+
+const FLAMBE_IMAGE_DIRECTORY = "res://img/flambe/"
 var fireDeath = false
+var fireDeathSpriteList = []
+
 var poopDeath = false
+const POOP_DEATH_SPRITE = ""
 
 var keyMap = {}
 
@@ -165,8 +171,31 @@ func _can_Move(currentPos,moveDir):
     return false
 
 func checkDeath():
-	if(transformerDeath || fireDeath || poopDeath):
-		get_node("DeathNode").die("aek")
+  if(transformerDeath):
+    get_node("DeathNode").die("aek")
+  elif(fireDeath):
+    soundMaker.play("fireburst", false)
+    var spriteToPassIn
+    if(playerPos.x == 2):
+      spriteToPassIn = fireDeathSpriteList[0]
+    elif(playerPos.x == 3):
+      spriteToPassIn = fireDeathSpriteList[1]
+    elif(playerPos.x == 5):
+      spriteToPassIn = fireDeathSpriteList[2]
+    elif(playerPos.x == 6):
+      spriteToPassIn = fireDeathSpriteList[3]
+    elif(playerPos.x == 8):
+      spriteToPassIn = fireDeathSpriteList[4]
+    elif(playerPos.x == 9):
+      spriteToPassIn = fireDeathSpriteList[5]
+    else:
+      print("SOMETHING TERRIBLE HAPPENED WHEN DESICIDING THE FLAME DEATH SPRITE!!")
+    get_node("DeathNode").die(spriteToPassIn)
+  elif(poopDeath):
+    soundMaker.play("splat", false)
+    var spriteToPassIn
+    spriteToPassIn = spriteMap[playerPos.y][playerPos.x][playerState]
+    get_node("DeathNode").die(spriteToPassIn)
 		
 func transformerDeathCheck():
 	var transformerAllDead = true
@@ -209,6 +238,17 @@ func update_sprites(delta):
     trans._update(delta)
 
   update_lives()
+
+func load_flame_death_sprites():
+  var flameDeathImgList = get_node("SparkControlNode").list_files_in_directory(FLAMBE_IMAGE_DIRECTORY)
+  fireDeathSpriteList = []
+  for i in range(flameDeathImgList.size()):
+    fireDeathSpriteList.append([])
+    var s = Sprite.new()
+    s.set_texture(load(flameDeathImgList[i]))
+    s.set_opacity(low)
+    self.add_child(s)
+    fireDeathSpriteList[i] = s
 
 func _ready():
   playerMovement = get_node("/root/global").get("playerMovement")
@@ -261,6 +301,10 @@ func _ready():
     for sprite in trans.spriteGetter():
       self.add_child(sprite)
 
+  var spitete = Sprite.new()
+  spitete.set_texture(load("res://img/flambe/1.png"))
+  spitete.set_opacity(off)
+  self.add_child(spitete)
 
   spriteMap = []
   for row in range(playerMovement.size()):
@@ -276,6 +320,7 @@ func _ready():
 
         # Load player w/ transformer sprites
         load_sprite("transformer", row, col)
+  load_flame_death_sprites()
 
 func update_lives():
 	
