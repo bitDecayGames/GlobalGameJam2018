@@ -147,8 +147,8 @@ func _process(delta):
     if not stillOnFire:
       fireStream.stop()
   elif playerMovement[playerPos.y][playerPos.x] & onFire:
+      playerMovement[playerPos.y][playerPos.x] ^= playerPresent
       fireDeath = true
-      decrease_lives()
       print("Fire", false)
   pass
 
@@ -174,6 +174,7 @@ func checkDeath():
   if(transformerDeath):
     get_node("DeathNode").die("aek")
   elif(fireDeath):
+    decrease_lives()
     soundMaker.play("fireburst", false)
     var spriteToPassIn
     if(playerPos.x == 2):
@@ -209,6 +210,7 @@ func transformerDeathCheck():
 func poopDeathCheck():
 	if(playerMovement[playerPos.y][playerPos.x] & birdPoop):
 		playerMovement[playerPos.y][playerPos.x] ^= birdPoop
+		playerMovement[playerPos.y][playerPos.x] ^= playerPresent
 		poopDeath = true
 		decrease_lives()
 
@@ -222,6 +224,7 @@ func play_walk_sound():
   playWalkNoiseOne = not playWalkNoiseOne
 
 func update_sprites(delta):
+  update_lives()
   for row in range(playerMovement.size()):
     for col in range(playerMovement[row].size()):
       if playerPos.x == col && playerPos.y == row:
@@ -237,7 +240,6 @@ func update_sprites(delta):
   for trans in transformerList:
     trans._update(delta)
 
-  update_lives()
 
 func load_flame_death_sprites():
   var flameDeathImgList = get_node("SparkControlNode").list_files_in_directory(FLAMBE_IMAGE_DIRECTORY)
@@ -379,7 +381,6 @@ func print_board():
   print()
 
 func resetPlayer():
-  playerMovement[playerPos.y][playerPos.x] ^= playerPresent
   playerPos = Vector2(3, groundRow)
   playerMovement[playerPos.y][playerPos.x] |= playerPresent
   extinguisher.set_opacity(lit)
@@ -391,11 +392,17 @@ func resetPlayer():
 
 func game_Over():
 	gameOver.set_hidden(false)
+	soundMaker.stop_all()
+	fireStream.stop()
+	get_tree().get_root().get_node("/root/Node2D/StreamPlayer").stop()
+	soundMaker.play("death")
+
 
 func increment_score():
   scoreControl.value += 1
 
 func decrease_lives():
+  print(lives)
   lives -= 1
 
 func increaseDifficulty(increaseNum):
