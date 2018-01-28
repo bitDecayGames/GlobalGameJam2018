@@ -171,7 +171,7 @@ func lightningHits(delta):
 		for i in range(lightningSpriteList.size()):
 			lightningSpriteList[i].set_opacity(0)
 		var chance = randf()
-		if chance > 0.995:
+		if chance > 0.99995:
 			timeLightningHit = 0.5
 			var transformerNumber = randi() % 6
 			lightningSpriteList[transformerNumber].set_opacity(1)
@@ -280,6 +280,7 @@ func load_flame_death_sprites():
     fireDeathSpriteList[i] = s
 
 func _ready():
+  randomize()
   playerMovement = get_node("/root/global").get("playerMovement")
   scoreControl = get_node("Score")
   scoreControl.value = 0
