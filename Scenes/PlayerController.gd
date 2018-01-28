@@ -61,6 +61,8 @@ var playerPos = Vector2(3, groundRow)
 var playerState = noItem
 var scoreControl
 
+var gameOver
+
 var transformerDeath = false
 var fireDeath = false
 var poopDeath = false
@@ -310,6 +312,12 @@ func load_lives():
   life3.set_hidden(false)
   self.add_child(life3)
 
+  gameOver = Sprite.new()
+  var spriteName4 = "res://img/gameOver.png"
+  gameOver.set_texture(load(spriteName4))
+  gameOver.set_hidden(true)
+  self.add_child(gameOver)
+
 
 func load_sprite(stateString, row, col):
   var s = Sprite.new()
@@ -337,7 +345,7 @@ func resetPlayer():
   poopDeath = false
 
 func game_Over():
-	1==1
+	gameOver.set_hidden(false)
 
 func increment_score():
   scoreControl.value += 1
