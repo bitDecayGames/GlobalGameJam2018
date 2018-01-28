@@ -2,12 +2,11 @@ const SPARK_IMAGE_DIRECTORY = "res://img/spark/"
 const SPARK_OFF_IMAGE_OPACITY = 0.4
 const TIME_UNTIL_NEXT_SPARK_SPAWN = 10
 
-
-
 var sparkImgList = []
 var spriteMap = []
 var sparkMap = []
 
+var soundMaker
 var fireStream
 
 var sparkSpawnTimer = 0
@@ -15,6 +14,8 @@ var canMakeSpark = true
 var playerMovement
 
 func _ready():
+	
+	soundMaker = get_tree().get_root().get_node("/root/Node2D/SamplePlayer")
 	fireStream = get_tree().get_root().get_node("/root/Node2D/StreamPlayerFire")
 	playerMovement = get_node("/root/global").get("playerMovement")
 	sparkImgList = list_files_in_directory(SPARK_IMAGE_DIRECTORY)
@@ -66,6 +67,11 @@ func _process(delta):
 		if(spark.update_spark_pos(delta)):
 			spark.remove_this_spark()
 			sparkMap.erase(spark)
+			# time is up and we can't move, we are at the end
+			var value = get_tree().get_root().get_node("/root/Node2D/playField/Score").get("value")
+			value += 1
+			soundMaker.play("elecvictory")
+			get_tree().get_root().get_node("/root/Node2D/playField/Score").set("value", value)
 		else:
 			var playerCol = _getPlayerMapForPos(spark.sparkCurrentPos)
 			if(playerCol != -1 && playerMovement[1][playerCol] & transformerBlown):

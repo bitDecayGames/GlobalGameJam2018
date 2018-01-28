@@ -1,0 +1,135 @@
+[gd_scene load_steps=9 format=1]
+
+[ext_resource path="res://font/visitor.ttf.fnt" type="BitmapFont" id=1]
+[ext_resource path="res://sound/music/gameover.ogg" type="AudioStream" id=2]
+[ext_resource path="res://sound/music/music-player.gd" type="Script" id=3]
+[ext_resource path="res://sound/project-imported-sounds/hovermenu.smp" type="Sample" id=4]
+[ext_resource path="res://Scenes/Gameover_btn_start.gd" type="Script" id=5]
+[ext_resource path="res://Scenes/Gameover_btn_credits.gd" type="Script" id=6]
+[ext_resource path="res://Scenes/Gameover_btn_title.gd" type="Script" id=7]
+
+[sub_resource type="SampleLibrary" id=1]
+
+samples/hovermenu = {
+"db": -10.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 4 )
+}
+
+[node name="Node" type="Node"]
+
+[node name="Label" type="Label" parent="."]
+
+anchor/left = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 104.0
+margin/top = 275.0
+margin/right = 884.0
+margin/bottom = 307.0
+custom_fonts/font = ExtResource( 1 )
+text = "Game over"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="StreamPlayer" type="StreamPlayer" parent="."]
+
+stream/stream = ExtResource( 2 )
+stream/play = false
+stream/loop = false
+stream/volume_db = 0.0
+stream/autoplay = false
+stream/paused = false
+stream/loop_restart_time = 0.0
+stream/buffering_ms = 500
+script/script = ExtResource( 3 )
+
+[node name="SamplePlayer" type="SamplePlayer" parent="."]
+
+config/polyphony = 1
+config/samples = SubResource( 1 )
+default/volume_db = -10.0
+default/pitch_scale = 1.0
+default/pan = 0.0
+default/depth = 0.0
+default/height = 0.0
+default/filter/type = 0
+default/filter/cutoff = 5000.0
+default/filter/resonance = 1.0
+default/filter/gain = 1.0
+default/reverb_room = 2
+default/reverb_send = 0.0
+default/chorus_send = 0.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 559.0
+margin/top = 542.0
+margin/right = 1037.0
+margin/bottom = 793.0
+alignment = 0
+
+[node name="PlayAgain" type="Button" parent="VBoxContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 3
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 478.0
+margin/bottom = 81.0
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Play again"
+flat = false
+script/script = ExtResource( 5 )
+
+[node name="Credits" type="Button" parent="VBoxContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 3
+margin/left = 0.0
+margin/top = 85.0
+margin/right = 478.0
+margin/bottom = 166.0
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Credits"
+flat = false
+script/script = ExtResource( 6 )
+
+[node name="Title" type="Button" parent="VBoxContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 3
+margin/left = 0.0
+margin/top = 170.0
+margin/right = 478.0
+margin/bottom = 251.0
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Title screen"
+flat = false
+script/script = ExtResource( 7 )
+
+

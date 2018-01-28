@@ -1,36 +1,190 @@
-[gd_scene load_steps=8 format=1]
+[gd_scene load_steps=15 format=1]
 
-[ext_resource path="res://font/visitor.ttf.fnt" type="BitmapFont" id=1]
-[ext_resource path="res://Scenes/Title_btn_start.gd" type="Script" id=2]
-[ext_resource path="res://Scenes/Title_btn_credits.gd" type="Script" id=3]
-[ext_resource path="res://sound/music/title.ogg" type="AudioStream" id=4]
-[ext_resource path="res://sound/music/music-player.gd" type="Script" id=5]
-[ext_resource path="res://sound/project-imported-sounds/hovermenu.smp" type="Sample" id=6]
+[ext_resource path="res://img/splash/bitDecay_light.png" type="Texture" id=1]
+[ext_resource path="res://img/title.ogv" type="VideoStream" id=2]
+[ext_resource path="res://Scenes/Title_video.gd" type="Script" id=3]
+[ext_resource path="res://img/title.png" type="Texture" id=4]
+[ext_resource path="res://Scenes/Title_background.gd" type="Script" id=5]
+[ext_resource path="res://font/visitor.ttf.fnt" type="BitmapFont" id=6]
+[ext_resource path="res://Scenes/Title_btn_start.gd" type="Script" id=7]
+[ext_resource path="res://Scenes/Title_btn_credits.gd" type="Script" id=8]
+[ext_resource path="res://Scenes/Title_btn_gameover.gd" type="Script" id=9]
+[ext_resource path="res://sound/music/title.ogg" type="AudioStream" id=10]
+[ext_resource path="res://sound/music/music-player.gd" type="Script" id=11]
+[ext_resource path="res://sound/project-imported-sounds/hovermenu.smp" type="Sample" id=12]
 
-[sub_resource type="SampleLibrary" id=1]
+[sub_resource type="Animation" id=1]
+
+resource/name = "fade"
+length = 60.0
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("VideoPlayer:visibility/opacity")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = {
+"times": FloatArray( 8, 10 ),
+"transitions": FloatArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("ButtonsContainer:visibility/opacity")
+tracks/1/interp = 1
+tracks/1/imported = false
+tracks/1/keys = {
+"times": FloatArray( 8, 10 ),
+"transitions": FloatArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("BitDecay:visibility/opacity")
+tracks/2/interp = 1
+tracks/2/imported = false
+tracks/2/keys = {
+"times": FloatArray( 1, 3, 5, 7 ),
+"transitions": FloatArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0, 1.0, 0.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("ButtonsContainer:focus/ignore_mouse")
+tracks/3/interp = 1
+tracks/3/imported = false
+tracks/3/keys = {
+"times": FloatArray(  ),
+"transitions": FloatArray(  ),
+"update": 1,
+"values": [  ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("ButtonsContainer/Start:focus/ignore_mouse")
+tracks/4/interp = 1
+tracks/4/imported = false
+tracks/4/keys = {
+"times": FloatArray( 0, 10 ),
+"transitions": FloatArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("ButtonsContainer/Credit:focus/ignore_mouse")
+tracks/5/interp = 1
+tracks/5/imported = false
+tracks/5/keys = {
+"times": FloatArray( 0, 10 ),
+"transitions": FloatArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("ButtonsContainer/Gameover:focus/ignore_mouse")
+tracks/6/interp = 1
+tracks/6/imported = false
+tracks/6/keys = {
+"times": FloatArray( 0, 10 ),
+"transitions": FloatArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="SampleLibrary" id=2]
 
 samples/hovermenu = {
 "db": -15.0,
 "pitch": 1.0,
 "priority": 0,
-"sample": ExtResource( 6 )
+"sample": ExtResource( 12 )
 }
 
 [node name="dummyNode_titleScreen" type="Node"]
 
-[node name="ButtonsContainer" type="VBoxContainer" parent="."]
+[node name="Control" type="Control" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 40.0
+margin/bottom = 40.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control"]
+
+playback/process_mode = 1
+playback/default_blend_time = 0.0
+root/root = NodePath("..")
+anims/fade = SubResource( 1 )
+playback/active = true
+playback/speed = 1.0
+blend_times = [  ]
+autoplay = "fade"
+
+[node name="BitDecay" type="TextureFrame" parent="Control"]
+
+visibility/opacity = 0.0
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 1601.0
+margin/bottom = 899.0
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 0
+
+[node name="VideoPlayer" type="VideoPlayer" parent="Control"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 1602.0
+margin/bottom = 899.0
+stream/audio_track = 0
+stream/stream = ExtResource( 2 )
+stream/volume_db = 0.0
+stream/autoplay = true
+stream/paused = false
+expand = true
+script/script = ExtResource( 3 )
+
+[node name="TextureFrame" type="TextureFrame" parent="Control"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 1602.0
+margin/bottom = 899.0
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 0
+script/script = ExtResource( 5 )
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="Control"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 599.0
-margin/top = 546.0
-margin/right = 1024.0
-margin/bottom = 791.0
+margin/left = 69.0
+margin/top = 106.0
+margin/right = 494.0
+margin/bottom = 368.0
 alignment = 0
 
-[node name="Start" type="Button" parent="ButtonsContainer"]
+[node name="Start" type="Button" parent="Control/ButtonsContainer"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -39,36 +193,54 @@ size_flags/vertical = 3
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 425.0
-margin/bottom = 120.0
-custom_fonts/font = ExtResource( 1 )
+margin/bottom = 84.0
+custom_fonts/font = ExtResource( 6 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 text = "Start"
 flat = false
-script/script = ExtResource( 2 )
+script/script = ExtResource( 7 )
 
-[node name="Credit" type="Button" parent="ButtonsContainer"]
+[node name="Credit" type="Button" parent="Control/ButtonsContainer"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 3
 margin/left = 0.0
-margin/top = 124.0
+margin/top = 88.0
 margin/right = 425.0
-margin/bottom = 245.0
-custom_fonts/font = ExtResource( 1 )
+margin/bottom = 172.0
+custom_fonts/font = ExtResource( 6 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-text = "Credit"
+text = "Credits"
 flat = false
-script/script = ExtResource( 3 )
+script/script = ExtResource( 8 )
+
+[node name="Gameover" type="Button" parent="Control/ButtonsContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 3
+margin/left = 0.0
+margin/top = 176.0
+margin/right = 425.0
+margin/bottom = 262.0
+custom_fonts/font = ExtResource( 6 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Gameover"
+flat = false
+script/script = ExtResource( 9 )
 
 [node name="StreamPlayer" type="StreamPlayer" parent="."]
 
-stream/stream = ExtResource( 4 )
+stream/stream = ExtResource( 10 )
 stream/play = false
 stream/loop = false
 stream/volume_db = 0.0
@@ -76,12 +248,12 @@ stream/autoplay = false
 stream/paused = false
 stream/loop_restart_time = 0.0
 stream/buffering_ms = 500
-script/script = ExtResource( 5 )
+script/script = ExtResource( 11 )
 
 [node name="SamplePlayer" type="SamplePlayer" parent="."]
 
 config/polyphony = 1
-config/samples = SubResource( 1 )
+config/samples = SubResource( 2 )
 default/volume_db = 0.0
 default/pitch_scale = 1.0
 default/pan = 0.0
