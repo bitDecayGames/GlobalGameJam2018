@@ -444,10 +444,11 @@ func game_Over():
 	fireStream.stop()
 	get_tree().get_root().get_node("/root/Node2D/StreamPlayer").stop()
 	soundMaker.play("death")
+	get_tree().change_scene("res://Scenes/GameOver.tscn")
 
 
 func increment_score():
-  scoreControl.value += 1
+  scoreControl.value += 5
 
 func decrease_lives():
   print(lives)
