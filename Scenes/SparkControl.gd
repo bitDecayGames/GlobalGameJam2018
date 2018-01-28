@@ -1,16 +1,19 @@
 const SPARK_IMAGE_DIRECTORY = "res://img/spark/"
 const SPARK_OFF_IMAGE_OPACITY = 0.4
+const TIME_UNTIL_NEXT_SPARK_SPAWN = 10
 
 var sparkImgList = []
 var spriteMap = []
 var sparkMap = []
 
+var sparkSpawnTimer = 0
 var canMakeSpark = true
 
 func _ready():
 	sparkImgList = list_files_in_directory(SPARK_IMAGE_DIRECTORY)
 	print("sparkimg list  ", sparkImgList)
 	load_the_sprite_map()
+	create_spark()
 	set_process(true)
 
 func _process(delta):
@@ -26,6 +29,11 @@ func _process(delta):
 			print("\nSpark time to move? : ", spark.sparkTimeUntilMove)
 			#DEBUG THINGS
 			
+	sparkSpawnTimer += delta
+	if(sparkSpawnTimer >= TIME_UNTIL_NEXT_SPARK_SPAWN):
+		sparkSpawnTimer = 0
+		create_spark()
+	
 	for spark in sparkMap:
 		if(spark.update_spark_pos(delta)):
 			spark.remove_this_spark()
