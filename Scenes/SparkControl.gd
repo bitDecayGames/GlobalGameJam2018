@@ -8,6 +8,7 @@ var sparkImgList = []
 var spriteMap = []
 var sparkMap = []
 
+var soundMaker
 var fireStream
 
 var sparkSpawnTimer = 0
@@ -15,6 +16,8 @@ var canMakeSpark = true
 var playerMovement
 
 func _ready():
+	
+	soundMaker = get_tree().get_root().get_node("/root/Node2D/SamplePlayer")
 	fireStream = get_tree().get_root().get_node("/root/Node2D/StreamPlayerFire")
 	playerMovement = get_node("/root/global").get("playerMovement")
 	sparkImgList = list_files_in_directory(SPARK_IMAGE_DIRECTORY)
@@ -69,6 +72,7 @@ func _process(delta):
 			# time is up and we can't move, we are at the end
 			var value = get_tree().get_root().get_node("/root/Node2D/playField/Score").get("value")
 			value += 1
+			soundMaker.play("elecvictory")
 			get_tree().get_root().get_node("/root/Node2D/playField/Score").set("value", value)
 		else:
 			var playerCol = _getPlayerMapForPos(spark.sparkCurrentPos)

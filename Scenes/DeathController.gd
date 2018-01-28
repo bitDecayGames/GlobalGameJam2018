@@ -4,9 +4,11 @@ extends Node2D
 # var a = 2
 # var b = "textvar"
 
+var soundMaker
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
+	soundMaker = get_tree().get_root().get_node("/root/Node2D/SamplePlayer")
 	set_process(true)
 	pass
 
@@ -16,6 +18,7 @@ func _process(delta):
 func die(playerSpriteToBlink):
 	get_tree().set_pause(true)
 	print("paus has happened")
+	soundMaker.play("fireburst")
 	
 	var t = Timer.new()
 	t.set_wait_time(3)
