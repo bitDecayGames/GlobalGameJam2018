@@ -1,6 +1,10 @@
 # Sound
 var soundMaker
 var playWalkNoiseOne = true
+var fireSound
+var score = 0000
+
+var fireStream
 
 # Board bit masks
 var moveableSpace = 1 << 0
@@ -11,6 +15,8 @@ var onFire = 1 << 4
 var birdPoop = 1 << 5
 var transformerBlown = 1 << 6
 
+var difficultyMod = 1.0
+var difficultyIncrease = .01
 
 var up = Vector2(0, -1)
 var down = Vector2(0, 1)
@@ -55,6 +61,7 @@ func _process(delta):
 	var targetDir = stay
 	var nextMove = stay
 	
+	
 	if (Input.is_action_pressed(left_action) && !keyMap.has(left_action)):
 		keyMap[left_action] = true
 		targetDir = left
@@ -86,28 +93,38 @@ func _process(delta):
 		if(playerState == transformerItem):
 			transformer.set_opacity(lit)
 		playerState = extinguisherItem
-		soundMaker.play("pickup")
+		soundMaker.play("pickup", false)
 		#playerMovement[playerPos.y][playerPos.x] ^= extinguisherSpawned
 		extinguisher.set_opacity(off)
 	elif playerMovement[playerPos.y][playerPos.x] & transformerSpawned && playerState != transformerItem:
 		if(playerState == extinguisherItem):
 			extinguisher.set_opacity(lit)
 		playerState = transformerItem
-		soundMaker.play("pickup")
+		soundMaker.play("pickup", false)
 		transformer.set_opacity(off)
 	elif playerMovement[playerPos.y][playerPos.x] & onFire:
 		print("Fire", false)
 
 	if nextMove == up && playerPos.y == topOfPole && playerState == transformerItem:
 		soundMaker.play("plugin", false)
-		if(playerMovement[playerPos.y][playerPos.x] & transformerBlown):
+		if(playerMovement[playerPos.y][playerPos.x] & transformerBlown && !(playerMovement[playerPos.y][playerPos.x] & onFire)):
 			playerMovement[playerPos.y][playerPos.x] ^= transformerBlown 
+			increaseDifficulty(difficultyIncrease)
+	
+
 			
 		pass
 	if nextMove == up && playerPos.y == topOfPole && playerState == extinguisherItem:
 		soundMaker.play("extinguish", false)
 		if(playerMovement[playerPos.y][playerPos.x] & onFire):
 			playerMovement[playerPos.y][playerPos.x] ^= onFire
+			increaseDifficulty(difficultyIncrease)
+		var stillOnFire = false
+		for tran in transformerList:
+			if playerMovement[tran.pos.y][tran.pos.x] & onFire:
+				stillOnFire = true
+		if not stillOnFire:
+			fireStream.stop()
 		pass
 
 	if nextMove != stay && previousPos.y == topOfPole:
@@ -131,10 +148,10 @@ func _can_Move(currentPos,moveDir):
 
 func play_walk_sound():
 	if playWalkNoiseOne:
-		soundMaker.play("walk1")
+		soundMaker.play("walk1", false)
 		pass
 	else:
-		soundMaker.play("walk2")
+		soundMaker.play("walk2", false)
 		pass
 	playWalkNoiseOne = not playWalkNoiseOne
 
@@ -160,6 +177,7 @@ func _ready():
 	set_process(true)
 	
 	soundMaker = get_tree().get_root().get_node("/root/Node2D/SamplePlayer")
+	fireStream = get_tree().get_root().get_node("/root/Node2D/StreamPlayerFire")
 	
 	var backgroundLCDs = Sprite.new()
 	backgroundLCDs.set_texture(load("res://img/blankCells.png"))
@@ -229,6 +247,9 @@ func print_board():
 	for row in playerMovement:
 		print(row)
 	print()
+	
+func increaseDifficulty(increaseNum):
+	difficultyMod += increaseNum
 		
 class transformerBox:
 	var pos

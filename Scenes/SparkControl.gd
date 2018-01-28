@@ -2,15 +2,20 @@ const SPARK_IMAGE_DIRECTORY = "res://img/spark/"
 const SPARK_OFF_IMAGE_OPACITY = 0.4
 const TIME_UNTIL_NEXT_SPARK_SPAWN = 10
 
+
+
 var sparkImgList = []
 var spriteMap = []
 var sparkMap = []
+
+var fireStream
 
 var sparkSpawnTimer = 0
 var canMakeSpark = true
 var playerMovement
 
 func _ready():
+	fireStream = get_tree().get_root().get_node("/root/Node2D/StreamPlayerFire")
 	playerMovement = get_node("/root/global").get("playerMovement")
 	sparkImgList = list_files_in_directory(SPARK_IMAGE_DIRECTORY)
 	print("sparkimg list  ", sparkImgList)
@@ -64,6 +69,9 @@ func _process(delta):
 		else:
 			var playerCol = _getPlayerMapForPos(spark.sparkCurrentPos)
 			if(playerCol != -1 && playerMovement[1][playerCol] & transformerBlown):
+				if !(playerMovement[1][playerCol] & onFire):
+					fireStream.stop()
+					fireStream.play()
 				playerMovement[1][playerCol] |= onFire
 				spark.remove_this_spark()
 				sparkMap.erase(spark)
