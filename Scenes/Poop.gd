@@ -58,9 +58,9 @@ class SingleTurd:
 	func update_sprites():
 		for row in range(10):
 			if row == self.depth:
-				sprites[row][self.column].set_opacity(1)
+				sprites[row][self.column].set_hidden(false)
 			else:
-				sprites[row][self.column].set_opacity(0)
+				sprites[row][self.column].set_hidden(true)
 				
 	func getMapForDepth(depth):
 		# 3 depth = 2 map
@@ -90,7 +90,7 @@ func load_sprite(stateString, row, col):
 	var s = Sprite.new()
 	var spriteName = "res://img/%s/%s/%s.png" % [stateString, row, col]
 	s.set_texture(load(spriteName))
-	s.set_opacity(off)
+	s.set_hidden(true)
 	self.add_child(s)
 	return s
 	
