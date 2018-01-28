@@ -23,6 +23,7 @@ func die(playerSpriteToBlink):
 	t.connect("timeout", self, "unpauseTheWorld")
 	add_child(t)
 	t.start()
+	
 
 func blinkSprite(playerSpriteToBlink):
 	pass
