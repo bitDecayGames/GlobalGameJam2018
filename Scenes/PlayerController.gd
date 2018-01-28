@@ -4,6 +4,11 @@ var playWalkNoiseOne = true
 var fireSound
 var score = 0000
 
+var lives = 3
+var life1
+var life2
+var life3
+
 var fireStream
 
 # Board bit masks
@@ -135,6 +140,7 @@ func _process(delta):
       fireStream.stop()
   elif playerMovement[playerPos.y][playerPos.x] & onFire:
       fireDeath = true
+      decrease_lives()
       print("Fire", false)
   pass
 
@@ -165,12 +171,15 @@ func transformerDeathCheck():
 	for tran in transformerList:
 		if(!playerMovement[tran.pos.y][tran.pos.x] & transformerBlown):
 			transformerAllDead = false
+	if(transformerAllDead == true):
+		decrease_lives()
 	transformerDeath = transformerAllDead
 	
 func poopDeathCheck():
 	if(playerMovement[playerPos.y][playerPos.x] & birdPoop):
 		playerMovement[playerPos.y][playerPos.x] ^= birdPoop
 		poopDeath = true
+		decrease_lives()
 
 func play_walk_sound():
   if playWalkNoiseOne:
@@ -197,10 +206,14 @@ func update_sprites(delta):
   for trans in transformerList:
     trans._update(delta)
 
+  update_lives()
+
 func _ready():
   playerMovement = get_node("/root/global").get("playerMovement")
   scoreControl = get_node("Score")
   scoreControl.value = 0
+
+  load_lives()
 
   set_process(true)
 
@@ -262,6 +275,41 @@ func _ready():
         # Load player w/ transformer sprites
         load_sprite("transformer", row, col)
 
+func update_lives():
+	
+	if lives < 3:
+		life3.set_hidden(true)
+	if lives < 2:
+		life2.set_hidden(true)
+	if lives < 1:
+		life1.set_hidden(true)
+	if lives < 0 :
+		game_Over()
+#               life3.set_hidden(true)
+#       elif(lives == 1):
+#               life2.set_hidden(true)
+#       elif(lives <= 0 ):
+#               life1.set_hidden(true)
+
+func load_lives():
+  life1 = Sprite.new()
+  var spriteName = "res://img/life1.png"
+  life1.set_texture(load(spriteName))
+  life1.set_hidden(false)
+  self.add_child(life1)
+
+  life2 = Sprite.new()
+  var spriteName2 = "res://img/life2.png"
+  life2.set_texture(load(spriteName2))
+  life2.set_hidden(false)
+  self.add_child(life2)
+  
+  life3 = Sprite.new()
+  var spriteName3 = "res://img/life3.png"
+  life3.set_texture(load(spriteName3))
+  life3.set_hidden(false)
+  self.add_child(life3)
+
 
 func load_sprite(stateString, row, col):
   var s = Sprite.new()
@@ -288,8 +336,14 @@ func resetPlayer():
   fireDeath = false
   poopDeath = false
 
+func game_Over():
+	1==1
+
 func increment_score():
   scoreControl.value += 1
+
+func decrease_lives():
+  lives -= 1
 
 func increaseDifficulty(increaseNum):
   difficultyMod += increaseNum
