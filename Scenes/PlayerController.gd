@@ -69,6 +69,8 @@ const POOP_DEATH_SPRITE = ""
 var keyMap = {}
 
 func _process(delta):
+  transformerDeathCheck()
+  poopDeathCheck()
   checkDeath()
 
   var targetDir = stay
@@ -114,9 +116,7 @@ func _process(delta):
     playerState = transformerItem
     soundMaker.play("pickup", false)
     transformer.set_opacity(off)
-  elif playerMovement[playerPos.y][playerPos.x] & onFire:
-    fireDeath = true
-    print("Fire", false)
+  
 
   if nextMove == up && playerPos.y == topOfPole && playerState == transformerItem:
     soundMaker.play("plugin", false)
@@ -126,6 +126,7 @@ func _process(delta):
       increaseDifficulty(difficultyIncrease)
 
     pass
+
   if nextMove == up && playerPos.y == topOfPole && playerState == extinguisherItem:
     soundMaker.play("extinguish", false)
     if(playerMovement[playerPos.y][playerPos.x] & onFire):
@@ -138,7 +139,10 @@ func _process(delta):
         stillOnFire = true
     if not stillOnFire:
       fireStream.stop()
-    pass
+  elif playerMovement[playerPos.y][playerPos.x] & onFire:
+      fireDeath = true
+      print("Fire", false)
+  pass
 
   if nextMove != stay && previousPos.y == topOfPole:
       extinguisher.set_opacity(lit)
@@ -162,6 +166,7 @@ func checkDeath():
   if(transformerDeath):
     get_node("DeathNode").die("aek")
   elif(fireDeath):
+    soundMaker.play("fireburst", false)
     var spriteToPassIn
     if(playerPos.x == 2):
       spriteToPassIn = fireDeathSpriteList[0]
@@ -179,7 +184,20 @@ func checkDeath():
       print("SOMETHING TERRIBLE HAPPENED WHEN DESICIDING THE FLAME DEATH SPRITE!!")
     get_node("DeathNode").die(spriteToPassIn)
   elif(poopDeath):
+    soundMaker.play("splat", false)
     get_node("DeathNode").die("aek")
+		
+func transformerDeathCheck():
+	var transformerAllDead = true
+	for tran in transformerList:
+		if(!playerMovement[tran.pos.y][tran.pos.x] & transformerBlown):
+			transformerAllDead = false
+	transformerDeath = transformerAllDead
+	
+func poopDeathCheck():
+	if(playerMovement[playerPos.y][playerPos.x] & birdPoop):
+		playerMovement[playerPos.y][playerPos.x] ^= birdPoop
+		poopDeath = true
 
 func play_walk_sound():
   if playWalkNoiseOne:

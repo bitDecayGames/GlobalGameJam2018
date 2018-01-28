@@ -37,6 +37,7 @@ class SingleTurd:
 			set_poop_flag()
 			self.update_sprites()
 			if self.depth >= 9:
+				cleanup_poop_flag()
 				return true
 		self.update_sprites()
 		return false
@@ -45,20 +46,21 @@ class SingleTurd:
 		var row = getMapForDepth(self.depth)
 		if row == -1:
 			return
-		self.map[row][column] ^= self.turdMask
+		if(self.map[row][column+1] & self.turdMask):
+			self.map[row][column+1] ^= self.turdMask
 		
 	func set_poop_flag():
 		var row = getMapForDepth(self.depth)
 		if row == -1 || row > 9:
 			return
-		self.map[row][column] |= self.turdMask
+		self.map[row][column+1] |= self.turdMask
 		
 	func update_sprites():
 		for row in range(10):
 			if row == self.depth:
-				sprites[row][self.column].set_opacity(1)
+				sprites[row][self.column].set_hidden(false)
 			else:
-				sprites[row][self.column].set_opacity(0)
+				sprites[row][self.column].set_hidden(true)
 				
 	func getMapForDepth(depth):
 		# 3 depth = 2 map
@@ -88,7 +90,7 @@ func load_sprite(stateString, row, col):
 	var s = Sprite.new()
 	var spriteName = "res://img/%s/%s/%s.png" % [stateString, row, col]
 	s.set_texture(load(spriteName))
-	s.set_opacity(off)
+	s.set_hidden(true)
 	self.add_child(s)
 	return s
 	

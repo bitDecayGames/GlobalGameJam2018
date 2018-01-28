@@ -8,9 +8,11 @@ var low = 0.08
 var spriteToBlink
 var blinkingTimer
 
+var soundMaker
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
+	soundMaker = get_tree().get_root().get_node("/root/Node2D/SamplePlayer")
 	set_process(true)
 	pass
 
