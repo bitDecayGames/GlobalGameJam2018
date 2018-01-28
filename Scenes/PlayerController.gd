@@ -256,8 +256,6 @@ func update_sprites(delta):
   for trans in transformerList:
     trans._update(delta)
 
-<<<<<<< HEAD
-=======
 func load_lightning_sprites():
   var lightningImgList = get_node("SparkControlNode").list_files_in_directory(LIGHTNING_IMAGE_DIRECTORY)
   lightningSpriteList = []
@@ -268,7 +266,7 @@ func load_lightning_sprites():
     s.set_opacity(low)
     self.add_child(s)
     lightningSpriteList[i] = s
->>>>>>> cd0dc4d9fcfa7ba01e35191a1f2cf07a6ddd5222
+
 
 func load_flame_death_sprites():
   var flameDeathImgList = get_node("SparkControlNode").list_files_in_directory(FLAMBE_IMAGE_DIRECTORY)
@@ -355,7 +353,6 @@ func _ready():
         load_sprite("transformer", row, col)
   load_flame_death_sprites()
 
-<<<<<<< HEAD
 func update_lives():
 	
 	if lives < 3:
@@ -397,9 +394,6 @@ func load_lives():
   gameOver.set_hidden(true)
   self.add_child(gameOver)
 
-
-=======
->>>>>>> cd0dc4d9fcfa7ba01e35191a1f2cf07a6ddd5222
 func load_sprite(stateString, row, col):
   var s = Sprite.new()
   var spriteName = "res://img/%s/%s/%s.png" % [stateString, row, col]
