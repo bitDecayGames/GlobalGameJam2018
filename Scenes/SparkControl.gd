@@ -66,6 +66,10 @@ func _process(delta):
 		if(spark.update_spark_pos(delta)):
 			spark.remove_this_spark()
 			sparkMap.erase(spark)
+			# time is up and we can't move, we are at the end
+			var value = get_tree().get_root().get_node("/root/Node2D/playField/Score").get("value")
+			value += 1
+			get_tree().get_root().get_node("/root/Node2D/playField/Score").set("value", value)
 		else:
 			var playerCol = _getPlayerMapForPos(spark.sparkCurrentPos)
 			if(playerCol != -1 && playerMovement[1][playerCol] & transformerBlown):
