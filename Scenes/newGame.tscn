@@ -48,7 +48,7 @@ samples/electrocuted = {
 "sample": ExtResource( 11 )
 }
 samples/elecvictory = {
-"db": -30.0,
+"db": -10.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 12 )
@@ -66,7 +66,7 @@ samples/fire = {
 "sample": ExtResource( 14 )
 }
 samples/fireburst = {
-"db": -30.0,
+"db": -10.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 15 )
