@@ -5,4 +5,4 @@ extends Button
 # var b = "textvar"
 
 func _pressed():
-	get_tree().change_scene("res://Scenes/game.tscn")
+	get_tree().change_scene("res://Scenes/newGame.tscn")

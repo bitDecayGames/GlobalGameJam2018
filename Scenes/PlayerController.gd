@@ -1,8 +1,3 @@
-# These are the offest on the parent TextureFrame. Not sure how else to get this working
-const parent_offset_x = 308
-const parent_offset_y = 55
-var parentOffsetVector = Vector2(parent_offset_x, parent_offset_y)
-
 # Sound
 var soundMaker
 var playWalkNoiseOne = true
@@ -95,20 +90,22 @@ func _process(delta):
 	# interactions
 	if playerMovement[playerPos.y][playerPos.x] & extinguisherSpawned && playerState != extinguisherItem:
 		playerState = extinguisherItem
-		soundMaker.play("pickup")
+		# soundMaker.play("pickup")
 		#playerMovement[playerPos.y][playerPos.x] ^= extinguisherSpawned
 		extinguisher.set_opacity(off)
 	elif playerMovement[playerPos.y][playerPos.x] & transformerSpawned && playerState != transformerItem:
 		playerState = transformerItem
-		soundMaker.play("pickup")
+		# soundMaker.play("pickup")
 		transformer.set_opacity(off)
 	elif playerMovement[playerPos.y][playerPos.x] & onFire:
 		print("Fire", false)
 
 	if nextMove == up && playerPos.y == topOfPole && playerState == transformerItem:
-		soundMaker.play("plugin", false)
+		# soundMaker.play("plugin", false)
+		pass
 	if nextMove == up && playerPos.y == topOfPole && playerState == extinguisherItem:
-		soundMaker.play("extinguish", false)
+		# soundMaker.play("extinguish", false)
+		pass
 
 	if nextMove != stay && previousPos.y == topOfPole:
 			extinguisher.set_opacity(lit)
@@ -131,9 +128,11 @@ func _can_Move(currentPos,moveDir):
 
 func play_walk_sound():
 	if playWalkNoiseOne:
-		soundMaker.play("walk1")
+#		soundMaker.play("walk1")
+		pass
 	else:
-		soundMaker.play("walk2")
+#		soundMaker.play("walk2")
+		pass
 	playWalkNoiseOne = not playWalkNoiseOne
 
 func update_sprites():
@@ -155,30 +154,21 @@ func update_sprites():
 func _ready():
 	set_process(true)
 	
-	soundMaker = get_tree().get_root().get_node("/root/TextureFrame/SamplePlayer")
+	# soundMaker = get_tree().get_root().get_node("/root/Node2D/SamplePlayer")
 	
 	var backgroundLCDs = Sprite.new()
 	backgroundLCDs.set_texture(load("res://img/blankCells.png"))
-	backgroundLCDs.set_centered(false)
-#	backgroundLCDs.set_pos(Vector2(backgroundLCDs.get_texture().get_width()/2,backgroundLCDs.get_texture().get_height()/2))
-	backgroundLCDs.set_pos(parentOffsetVector)
 	backgroundLCDs.set_opacity(low)
 	self.add_child(backgroundLCDs)
 	
 	
 	extinguisher.set_texture(load("res://img/fireExtinguisher.png"))
-	extinguisher.set_centered(false)
-#	extinguisher.set_pos(Vector2(extinguisher.get_texture().get_width()/2, extinguisher.get_texture().get_height()/2))
-	extinguisher.set_pos(parentOffsetVector)
 	extinguisher.set_opacity(lit)
 	self.add_child(extinguisher)
 	
 	playerMovement[4][1] |= extinguisherSpawned
 	
 	transformer.set_texture(load("res://img/electricTransformer.png"))
-#	transformer.set_pos(Vector2(transformer.get_texture().get_width()/2, transformer.get_texture().get_height()/2))
-	transformer.set_centered(false)
-	transformer.set_pos(parentOffsetVector)
 	transformer.set_opacity(lit)
 	self.add_child(transformer)
 	
@@ -225,9 +215,6 @@ func load_sprite(stateString, row, col):
 	var spriteName = "res://img/%s/%s/%s.png" % [stateString, row, col]
 	print("Loading sprite: %s" % spriteName)
 	s.set_texture(load(spriteName))
-#	s.set_pos(Vector2(s.get_texture().get_width()/2,s.get_texture().get_height()/2))
-	s.set_centered(false)
-	s.set_pos(parentOffsetVector)
 	s.set_opacity(off)
 	self.add_child(s)
 	spriteMap[row][col][stateString] = s
@@ -235,6 +222,7 @@ func load_sprite(stateString, row, col):
 func print_board():
 	for row in playerMovement:
 		print(row)
+	print()
 		
 class transformerBox:
 	var pos
@@ -250,13 +238,11 @@ class transformerBox:
 		brokenSprite = Sprite.new()
 		var spriteName = "res://img/brokenTrans/%s.png" % [transformerNum]
 		brokenSprite.set_texture(load(spriteName))
-#		brokenSprite.set_pos(parentOffsetVector)
 		brokenSprite.set_opacity(0)
 		
 		fixedSprite = Sprite.new()
 		var spriteName = "res://img/fixedTrans/%s.png" % [transformerNum]
 		fixedSprite.set_texture(load(spriteName))
-#		fixedSprite.set_pos(parentOffsetVector)
 		fixedSprite.set_opacity(1)
 		
 		
