@@ -7,7 +7,7 @@ extends Button
 var soundID = 0
 
 func _pressed():
-	get_tree().change_scene("res://Scenes/newGame.tscn")
+	get_tree().change_scene("res://Scenes/LoadingScreen.tscn")
 	
 func _ready():
     set_process_input(true)
