@@ -91,7 +91,7 @@ samples/plugin = {
 "sample": ExtResource( 18 )
 }
 samples/poop = {
-"db": -10.0,
+"db": -15.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 19 )
