@@ -1,13 +1,14 @@
 extends Control 
 
-export var value = 123
+export var value = 0
 
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
-	pass
+	set_process(true)
 	
-func _draw():	
+func _process(delta):	
+	value = get_node("/root/global").get("currentScore")
 	if value > 9999:
 		value = 9999
 	var s = String(value)

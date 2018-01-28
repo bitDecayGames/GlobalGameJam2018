@@ -59,6 +59,10 @@ func _process(delta):
 	for spark in sparkMap:
 		spriteMap[spark.sparkCurrentPos].set_opacity(1)
 		if(spark.update_spark_pos(delta)):
+			# our spark made it to the other side, CONGRADULATIONS
+			var score = get_node("/root/global").get("currentScore")
+			score += 1
+			get_node("/root/global").set("currentScore", score)
 			spark.remove_this_spark()
 			sparkMap.erase(spark)
 		else:
@@ -145,6 +149,7 @@ class Spark:
 				update_sprite()
 				sparkTimeUntilMove = SPARK_MAX_TIME_UNTIL_MOVE
 		elif(sparkTimeUntilMove <= 0):
+			# we are out of time and can't move
 			return true
 	
 	func can_move_spark():
