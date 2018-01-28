@@ -8,13 +8,31 @@ var sparkMap = []
 
 var sparkSpawnTimer = 0
 var canMakeSpark = true
+var playerMovement
 
 func _ready():
+	playerMovement = get_node("/root/global").get("playerMovement")
 	sparkImgList = list_files_in_directory(SPARK_IMAGE_DIRECTORY)
 	print("sparkimg list  ", sparkImgList)
 	load_the_sprite_map()
 	create_spark()
 	set_process(true)
+	
+func _getPlayerMapForPos(sparkPos):
+	if(sparkPos == 2):
+		return 2
+	elif(sparkPos == 3):
+		return 3
+	elif(sparkPos == 7 ):
+		return 5
+	elif(sparkPos == 8):
+		return 6
+	elif(sparkPos == 12):
+		return 8
+	elif(sparkPos == 13):
+		return 9
+	else:
+		return -1
 
 func _process(delta):
 	#DEBUG THINGS
@@ -34,11 +52,21 @@ func _process(delta):
 		sparkSpawnTimer = 0
 		create_spark()
 	
+	var onFire = 1 << 4
+	var transformerBlown = 1 << 6
+	
+	
 	for spark in sparkMap:
 		spriteMap[spark.sparkCurrentPos].set_opacity(1)
 		if(spark.update_spark_pos(delta)):
 			spark.remove_this_spark()
 			sparkMap.erase(spark)
+		else:
+			var playerCol = _getPlayerMapForPos(spark.sparkCurrentPos)
+			if(playerCol != -1 && playerMovement[1][playerCol] & transformerBlown):
+				playerMovement[1][playerCol] |= onFire
+				spark.remove_this_spark()
+				sparkMap.erase(spark)
 		
 	if(!Input.is_action_pressed("makeSpark")):
 		canMakeSpark = true
