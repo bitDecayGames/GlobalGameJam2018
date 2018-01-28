@@ -1,3 +1,6 @@
+# Sound
+var soundMaker
+var playWalkNoiseOne = true
 
 # Board bit masks
 var moveableSpace = 1 << 0
@@ -72,7 +75,9 @@ func _process(delta):
 		targetDir = down
 
 	if(_can_Move(playerPos, targetDir)):
-			nextMove = targetDir
+		nextMove = targetDir
+		if targetDir != stay:
+			play_walk_sound()
 
 	# Remove mask from leaving position
 	playerMovement[playerPos.y][playerPos.x] ^= playerPresent
@@ -112,6 +117,13 @@ func _can_Move(currentPos,moveDir):
 		return false
 	
 
+func play_walk_sound():
+	if playWalkNoiseOne:
+		soundMaker.play("walk1")
+	else:
+		soundMaker.play("walk2")
+	playWalkNoiseOne = not playWalkNoiseOne
+
 func update_sprites():
 	for row in range(playerMovement.size()):
 		for col in range(playerMovement[row].size()):
@@ -130,6 +142,8 @@ func update_sprites():
 
 func _ready():
 	set_process(true)
+	
+	soundMaker = get_tree().get_root().get_node("/root/TextureFrame/SamplePlayer")
 	
 	var backgroundLCDs = Sprite.new()
 	backgroundLCDs.set_texture(load("res://img/blankCells.png"))
