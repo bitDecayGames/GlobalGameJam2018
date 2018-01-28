@@ -1,0 +1,72 @@
+[gd_scene load_steps=5 format=1]
+
+[ext_resource path="res://Scenes/Title_btn_start.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Title_btn_credits.gd" type="Script" id=2]
+[ext_resource path="res://sound/music/title.ogg" type="AudioStream" id=3]
+[ext_resource path="res://sound/music/music-player.gd" type="Script" id=4]
+
+[node name="dummyNode_titleScreen" type="Node"]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 421.0
+margin/top = 471.0
+margin/right = 1190.0
+margin/bottom = 873.0
+alignment = 0
+
+[node name="MenuButton" type="MenuButton" parent="VBoxContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 3
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 769.0
+margin/bottom = 199.0
+toggle_mode = false
+click_on_press = true
+enabled_focus_mode = 0
+shortcut = null
+text = "Start"
+flat = true
+items = [  ]
+script/script = ExtResource( 1 )
+
+[node name="MenuButton 2" type="MenuButton" parent="VBoxContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 3
+margin/left = 0.0
+margin/top = 203.0
+margin/right = 769.0
+margin/bottom = 402.0
+toggle_mode = false
+click_on_press = true
+enabled_focus_mode = 0
+shortcut = null
+text = "Credits"
+flat = true
+items = [  ]
+script/script = ExtResource( 2 )
+
+[node name="StreamPlayer" type="StreamPlayer" parent="."]
+
+stream/stream = ExtResource( 3 )
+stream/play = false
+stream/loop = false
+stream/volume_db = 0.0
+stream/autoplay = false
+stream/paused = false
+stream/loop_restart_time = 0.0
+stream/buffering_ms = 500
+script/script = ExtResource( 4 )
+
+

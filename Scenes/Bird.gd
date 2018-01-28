@@ -39,6 +39,7 @@ func _process(delta):
 	
 
 func _ready():
+	print("peanut butter birdy time!")
 	spriteMap = []
 	for position in range(0, 10):
 		spriteMap.append({})
@@ -54,7 +55,7 @@ func load_sprite(facing, wingDirection, position):
 	var spriteName = "res://img/bird/%s/%s/%s.png" % [facing, wingDirection, position]
 	print("Loading sprite: %s" % spriteName)
 	s.set_texture(load(spriteName))
-	s.set_pos(Vector2(s.get_texture().get_width()/2,s.get_texture().get_height()/2))
+	# s.set_pos(Vector2(s.get_texture().get_width()/2,s.get_texture().get_height()/2))
 	s.set_opacity(off)
 	self.add_child(s)
 	spriteMap[position][wingDirection][facing] = s
@@ -72,6 +73,7 @@ func toggle_facing():
 		currentFacing = 'left'
 
 func move():
+	print("move")
 	if (currentFacing == 'left' and currentPosition == 0) or (currentFacing == 'right' and currentPosition == 9):
 		toggle_facing()
 	else:
