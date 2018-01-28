@@ -4,6 +4,11 @@ var playWalkNoiseOne = true
 var fireSound
 var score = 0000
 
+var lives = 3
+var life1
+var life2
+var life3
+
 var fireStream
 
 # Board bit masks
@@ -55,6 +60,8 @@ var extinguisherItem = "extinguisher"
 var playerPos = Vector2(3, groundRow)
 var playerState = noItem
 var scoreControl
+
+var gameOver
 
 var transformerDeath = false
 const TRANSFORMER_DEATH_SPRITE = ""
@@ -140,6 +147,7 @@ func _process(delta):
     if not stillOnFire:
       fireStream.stop()
   elif playerMovement[playerPos.y][playerPos.x] & onFire:
+      playerMovement[playerPos.y][playerPos.x] ^= playerPresent
       fireDeath = true
       print("Fire", false)
   pass
@@ -163,7 +171,7 @@ func lightningHits(delta):
 		for i in range(lightningSpriteList.size()):
 			lightningSpriteList[i].set_opacity(0)
 		var chance = randf()
-		if chance > 0.995:
+		if chance > 0.99995:
 			timeLightningHit = 0.5
 			var transformerNumber = randi() % 6
 			lightningSpriteList[transformerNumber].set_opacity(1)
@@ -182,6 +190,7 @@ func checkDeath():
   if(transformerDeath):
     get_node("DeathNode").die("aek")
   elif(fireDeath):
+    decrease_lives()
     soundMaker.play("fireburst", false)
     var spriteToPassIn
     if(playerPos.x == 2):
@@ -210,12 +219,16 @@ func transformerDeathCheck():
 	for tran in transformerList:
 		if(!playerMovement[tran.pos.y][tran.pos.x] & transformerBlown):
 			transformerAllDead = false
+	if(transformerAllDead == true):
+		decrease_lives()
 	transformerDeath = transformerAllDead
 	
 func poopDeathCheck():
 	if(playerMovement[playerPos.y][playerPos.x] & birdPoop):
 		playerMovement[playerPos.y][playerPos.x] ^= birdPoop
+		playerMovement[playerPos.y][playerPos.x] ^= playerPresent
 		poopDeath = true
+		decrease_lives()
 
 func play_walk_sound():
   if playWalkNoiseOne:
@@ -227,6 +240,7 @@ func play_walk_sound():
   playWalkNoiseOne = not playWalkNoiseOne
 
 func update_sprites(delta):
+  update_lives()
   for row in range(playerMovement.size()):
     for col in range(playerMovement[row].size()):
       if playerPos.x == col && playerPos.y == row:
@@ -253,6 +267,7 @@ func load_lightning_sprites():
     self.add_child(s)
     lightningSpriteList[i] = s
 
+
 func load_flame_death_sprites():
   var flameDeathImgList = get_node("SparkControlNode").list_files_in_directory(FLAMBE_IMAGE_DIRECTORY)
   fireDeathSpriteList = []
@@ -265,9 +280,12 @@ func load_flame_death_sprites():
     fireDeathSpriteList[i] = s
 
 func _ready():
+  randomize()
   playerMovement = get_node("/root/global").get("playerMovement")
   scoreControl = get_node("Score")
   scoreControl.value = 0
+
+  load_lives()
 
   set_process(true)
 
@@ -334,8 +352,48 @@ func _ready():
 
         # Load player w/ transformer sprites
         load_sprite("transformer", row, col)
-
   load_flame_death_sprites()
+
+func update_lives():
+	
+	if lives < 3:
+		life3.set_hidden(true)
+	if lives < 2:
+		life2.set_hidden(true)
+	if lives < 1:
+		life1.set_hidden(true)
+	if lives < 0 :
+		game_Over()
+#               life3.set_hidden(true)
+#       elif(lives == 1):
+#               life2.set_hidden(true)
+#       elif(lives <= 0 ):
+#               life1.set_hidden(true)
+
+func load_lives():
+  life1 = Sprite.new()
+  var spriteName = "res://img/life1.png"
+  life1.set_texture(load(spriteName))
+  life1.set_hidden(false)
+  self.add_child(life1)
+
+  life2 = Sprite.new()
+  var spriteName2 = "res://img/life2.png"
+  life2.set_texture(load(spriteName2))
+  life2.set_hidden(false)
+  self.add_child(life2)
+  
+  life3 = Sprite.new()
+  var spriteName3 = "res://img/life3.png"
+  life3.set_texture(load(spriteName3))
+  life3.set_hidden(false)
+  self.add_child(life3)
+
+  gameOver = Sprite.new()
+  var spriteName4 = "res://img/gameOver.png"
+  gameOver.set_texture(load(spriteName4))
+  gameOver.set_hidden(true)
+  self.add_child(gameOver)
 
 func load_sprite(stateString, row, col):
   var s = Sprite.new()
@@ -352,7 +410,6 @@ func print_board():
   print()
 
 func resetPlayer():
-  playerMovement[playerPos.y][playerPos.x] ^= playerPresent
   playerPos = Vector2(3, groundRow)
   playerMovement[playerPos.y][playerPos.x] |= playerPresent
   extinguisher.set_opacity(lit)
@@ -362,8 +419,20 @@ func resetPlayer():
   fireDeath = false
   poopDeath = false
 
+func game_Over():
+	gameOver.set_hidden(false)
+	soundMaker.stop_all()
+	fireStream.stop()
+	get_tree().get_root().get_node("/root/Node2D/StreamPlayer").stop()
+	soundMaker.play("death")
+
+
 func increment_score():
   scoreControl.value += 1
+
+func decrease_lives():
+  print(lives)
+  lives -= 1
 
 func increaseDifficulty(increaseNum):
   difficultyMod += increaseNum
