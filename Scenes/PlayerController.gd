@@ -47,7 +47,8 @@ var extinguisher = Sprite.new()
 var extinguisherItem = "extinguisher"
 
 var playerPos = Vector2(3, groundRow)
-var playerState = noItem;
+var playerState = noItem
+var scoreControl
 
 var keyMap = {}
 
@@ -102,12 +103,13 @@ func _process(delta):
 		soundMaker.play("plugin", false)
 		if(playerMovement[playerPos.y][playerPos.x] & transformerBlown):
 			playerMovement[playerPos.y][playerPos.x] ^= transformerBlown 
-			
+			increment_score()
 		pass
 	if nextMove == up && playerPos.y == topOfPole && playerState == extinguisherItem:
 		soundMaker.play("extinguish", false)
 		if(playerMovement[playerPos.y][playerPos.x] & onFire):
 			playerMovement[playerPos.y][playerPos.x] ^= onFire
+			increment_score()
 		pass
 
 	if nextMove != stay && previousPos.y == topOfPole:
@@ -156,7 +158,9 @@ func update_sprites(delta):
 
 func _ready():
 	playerMovement = get_node("/root/global").get("playerMovement")
-	
+	scoreControl = get_node("Score")
+	scoreControl.value = 0
+		
 	set_process(true)
 	
 	soundMaker = get_tree().get_root().get_node("/root/Node2D/SamplePlayer")
@@ -216,6 +220,7 @@ func _ready():
 				# Load player w/ transformer sprites
 				load_sprite("transformer", row, col)
 
+
 func load_sprite(stateString, row, col):
 	var s = Sprite.new()
 	var spriteName = "res://img/%s/%s/%s.png" % [stateString, row, col]
@@ -229,6 +234,9 @@ func print_board():
 	for row in playerMovement:
 		print(row)
 	print()
+	
+func increment_score():
+	scoreControl.value += 1
 		
 class transformerBox:
 	var pos
@@ -302,3 +310,4 @@ class transformerBox:
 			
 	func spriteGetter():
 		return [fixedSprite,brokenSprite,largeFireSprite,smallFireSprite]
+		

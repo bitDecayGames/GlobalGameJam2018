@@ -73,7 +73,6 @@ func toggle_facing():
 		currentFacing = 'left'
 
 func move():
-	print("move")
 	if (currentFacing == 'left' and currentPosition == 0) or (currentFacing == 'right' and currentPosition == 9):
 		toggle_facing()
 	else:
