@@ -163,7 +163,7 @@ func lightningHits(delta):
 		for i in range(lightningSpriteList.size()):
 			lightningSpriteList[i].set_opacity(0)
 		var chance = randf()
-		if chance > 0.99:
+		if chance > 0.995:
 			timeLightningHit = 0.5
 			var transformerNumber = randi() % 6
 			lightningSpriteList[transformerNumber].set_opacity(1)
