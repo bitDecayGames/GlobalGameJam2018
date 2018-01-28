@@ -5,8 +5,10 @@ var low = 0.08
 # class member variables go here, for example:
 # var a = 2
 # var b = "textvar"
-var spriteToBlink
+var spritesToBlink
 var blinkingTimer
+
+var blinkState = 0
 
 var soundMaker
 func _ready():
@@ -19,10 +21,9 @@ func _ready():
 func _process(delta):
 	pass
 
-func die(playerSpriteToBlink):
+func die(playerSpritesToBlink):
 	get_tree().set_pause(true)
-	print("paus has happened")
-	spriteToBlink = playerSpriteToBlink
+	spritesToBlink = playerSpritesToBlink
 	
 	var t = Timer.new()
 	t.set_wait_time(3)
@@ -31,24 +32,26 @@ func die(playerSpriteToBlink):
 	add_child(t)
 	t.start()
 	
-	print(spriteToBlink)
 	var untilBlink = Timer.new()
 	untilBlink.set_wait_time(0.5)
-	untilBlink.connect("timeout", self, "blinkSprite")
+	untilBlink.connect("timeout", self, "blinkSprites")
 	blinkingTimer = untilBlink
 	add_child(untilBlink)
 	untilBlink.start()
 
-func blinkSprite():
-	if(spriteToBlink.get_opacity() == 1):
-		spriteToBlink.set_opacity(low)
+func blinkSprites():
+	for sprite in spritesToBlink:
+		sprite.set_opacity(blinkState)
+	if blinkState == 0:
+		blinkState = 1
 	else:
-		spriteToBlink.set_opacity(lit)
+		blinkState = 0
 
 func unpauseTheWorld():
 	print("We Paus the WORLD!!")
 	var playField = get_tree().get_root().get_node("/root/Node2D/playField")
 	playField.resetPlayer()
 	blinkingTimer.stop()
-	spriteToBlink.set_opacity(low)
+	for sprite in spritesToBlink:
+		sprite.set_opacity(low)
 	get_tree().set_pause(false)

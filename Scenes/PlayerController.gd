@@ -57,14 +57,12 @@ var playerState = noItem
 var scoreControl
 
 var transformerDeath = false
-const TRANSFORMER_DEATH_SPRITE = ""
 
 const FLAMBE_IMAGE_DIRECTORY = "res://img/flambe/"
 var fireDeath = false
 var fireDeathSpriteList = []
 
 var poopDeath = false
-const POOP_DEATH_SPRITE = ""
 
 var keyMap = {}
 
@@ -164,30 +162,45 @@ func _can_Move(currentPos,moveDir):
 
 func checkDeath():
   if(transformerDeath):
-    get_node("DeathNode").die("aek")
+    print("transformer death happens")
+    var spritesToPassIn = []
+    for trans in transformerList:
+      var broken = trans.brokenSprite
+      broken.set_opacity(0)
+      spritesToPassIn.append(broken)
+      var fixed = trans.fixedSprite
+      fixed.set_opacity(0)
+      var largeFire = trans.largeFireSprite
+      largeFire.set_opacity(0)
+      spritesToPassIn.append(largeFire)
+      var smallFire = trans.smallFireSprite
+      smallFire.set_opacity(0)
+    for sprite in spritesToPassIn:
+      sprite.set_opacity(0)
+    get_node("DeathNode").die(spritesToPassIn)
   elif(fireDeath):
     soundMaker.play("fireburst", false)
-    var spriteToPassIn
+    var spritesToPassIn = []
     if(playerPos.x == 2):
-      spriteToPassIn = fireDeathSpriteList[0]
+      spritesToPassIn.append(fireDeathSpriteList[0])
     elif(playerPos.x == 3):
-      spriteToPassIn = fireDeathSpriteList[1]
+      spritesToPassIn.append(fireDeathSpriteList[1])
     elif(playerPos.x == 5):
-      spriteToPassIn = fireDeathSpriteList[2]
+      spritesToPassIn.append(fireDeathSpriteList[2])
     elif(playerPos.x == 6):
-      spriteToPassIn = fireDeathSpriteList[3]
+      spritesToPassIn.append(fireDeathSpriteList[3])
     elif(playerPos.x == 8):
-      spriteToPassIn = fireDeathSpriteList[4]
+      spritesToPassIn.append(fireDeathSpriteList[4])
     elif(playerPos.x == 9):
-      spriteToPassIn = fireDeathSpriteList[5]
+      spritesToPassIn.append(fireDeathSpriteList[5])
     else:
       print("SOMETHING TERRIBLE HAPPENED WHEN DESICIDING THE FLAME DEATH SPRITE!!")
-    get_node("DeathNode").die(spriteToPassIn)
+    get_node("DeathNode").die(spritesToPassIn)
   elif(poopDeath):
     soundMaker.play("splat", false)
-    var spriteToPassIn
-    spriteToPassIn = spriteMap[playerPos.y][playerPos.x][playerState]
-    get_node("DeathNode").die(spriteToPassIn)
+    var spritesToPassIn = []
+    spritesToPassIn.append(spriteMap[playerPos.y][playerPos.x][playerState])
+    get_node("DeathNode").die(spritesToPassIn)
 		
 func transformerDeathCheck():
 	var transformerAllDead = true
@@ -280,6 +293,11 @@ func _ready():
   playerMovement[1][3] |= transformerBlown
   playerMovement[1][5] |= transformerBlown
   playerMovement[1][6] |= transformerBlown
+
+#  playerMovement[1][2] |= transformerBlown
+#  playerMovement[1][8] |= transformerBlown
+#  playerMovement[1][9] |= transformerBlown
+
   playerMovement[1][6] |= onFire
 
   for trans in transformerList:
