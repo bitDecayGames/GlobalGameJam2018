@@ -95,20 +95,22 @@ func _process(delta):
 	# interactions
 	if playerMovement[playerPos.y][playerPos.x] & extinguisherSpawned && playerState != extinguisherItem:
 		playerState = extinguisherItem
-		soundMaker.play("pickup")
+		# soundMaker.play("pickup")
 		#playerMovement[playerPos.y][playerPos.x] ^= extinguisherSpawned
 		extinguisher.set_opacity(off)
 	elif playerMovement[playerPos.y][playerPos.x] & transformerSpawned && playerState != transformerItem:
 		playerState = transformerItem
-		soundMaker.play("pickup")
+		# soundMaker.play("pickup")
 		transformer.set_opacity(off)
 	elif playerMovement[playerPos.y][playerPos.x] & onFire:
 		print("Fire", false)
 
 	if nextMove == up && playerPos.y == topOfPole && playerState == transformerItem:
-		soundMaker.play("plugin", false)
+		# soundMaker.play("plugin", false)
+		pass
 	if nextMove == up && playerPos.y == topOfPole && playerState == extinguisherItem:
-		soundMaker.play("extinguish", false)
+		# soundMaker.play("extinguish", false)
+		pass
 
 	if nextMove != stay && previousPos.y == topOfPole:
 			extinguisher.set_opacity(lit)
@@ -131,9 +133,11 @@ func _can_Move(currentPos,moveDir):
 
 func play_walk_sound():
 	if playWalkNoiseOne:
-		soundMaker.play("walk1")
+#		soundMaker.play("walk1")
+		pass
 	else:
-		soundMaker.play("walk2")
+#		soundMaker.play("walk2")
+		pass
 	playWalkNoiseOne = not playWalkNoiseOne
 
 func update_sprites():
@@ -155,7 +159,8 @@ func update_sprites():
 func _ready():
 	set_process(true)
 	
-	soundMaker = get_tree().get_root().get_node("/root/TextureFrame/SamplePlayer")
+	# soundMaker = get_tree().get_root().get_node("/root/Node2D/SamplePlayer")
+	
 	
 	var backgroundLCDs = Sprite.new()
 	backgroundLCDs.set_texture(load("res://img/blankCells.png"))
