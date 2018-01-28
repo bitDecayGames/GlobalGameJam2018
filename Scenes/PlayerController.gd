@@ -56,12 +56,17 @@ var playerPos = Vector2(3, groundRow)
 var playerState = noItem
 var scoreControl
 
+var transformerDeath = false
+var fireDeath = false
+var poopDeath = false
+
 var keyMap = {}
 
 func _process(delta):
+  checkDeath()
+
   var targetDir = stay
   var nextMove = stay
-
 
   if (Input.is_action_pressed(left_action) && !keyMap.has(left_action)):
     keyMap[left_action] = true
@@ -104,6 +109,7 @@ func _process(delta):
     soundMaker.play("pickup", false)
     transformer.set_opacity(off)
   elif playerMovement[playerPos.y][playerPos.x] & onFire:
+    fireDeath = true
     print("Fire", false)
 
   if nextMove == up && playerPos.y == topOfPole && playerState == transformerItem:
@@ -112,8 +118,6 @@ func _process(delta):
       playerMovement[playerPos.y][playerPos.x] ^= transformerBlown
       increment_score()
       increaseDifficulty(difficultyIncrease)
-
-
 
     pass
   if nextMove == up && playerPos.y == topOfPole && playerState == extinguisherItem:
@@ -148,6 +152,9 @@ func _can_Move(currentPos,moveDir):
   else:
     return false
 
+func checkDeath():
+	if(transformerDeath || fireDeath || poopDeath):
+		get_node("DeathNode").die("aek")
 
 func play_walk_sound():
   if playWalkNoiseOne:
@@ -253,6 +260,17 @@ func print_board():
   for row in playerMovement:
     print(row)
   print()
+
+func resetPlayer():
+  playerMovement[playerPos.y][playerPos.x] ^= playerPresent
+  playerPos = Vector2(3, groundRow)
+  playerMovement[playerPos.y][playerPos.x] |= playerPresent
+  extinguisher.set_opacity(lit)
+  transformer.set_opacity(lit)
+  playerState = noItem
+  transformerDeath = false
+  fireDeath = false
+  poopDeath = false
 
 func increment_score():
   scoreControl.value += 1
