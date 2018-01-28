@@ -27,6 +27,8 @@ var topOfPole = 1
 
 var spriteMap=[]
 
+var transformerList = []
+
 var lit = 1
 var low = 0.08
 var off = 0
@@ -56,6 +58,7 @@ func _process(delta):
 	var nextMove = stay
 	
 	if (Input.is_action_pressed(left_action) && !keyMap.has(left_action)):
+		print_board()
 		keyMap[left_action] = true
 		targetDir = left
 	elif (Input.is_action_pressed(right_action) && !keyMap.has(right_action)):
@@ -121,6 +124,9 @@ func update_sprites():
 			else:
 				for state in spriteMap[row][col]:
 					spriteMap[row][col][state].set_opacity(off)
+					
+	for trans in transformerList:
+		trans._update()
 
 func _ready():
 	set_process(true)
@@ -151,7 +157,21 @@ func _ready():
 	# set our player spawn
 	playerMovement[playerPos.y][playerPos.x] |= playerPresent
 	
-	print_board()
+	transformerList.append(transformerBox.new(Vector2(2,1),1,playerMovement, transformerBlown))
+	transformerList.append(transformerBox.new(Vector2(3,1),2,playerMovement, transformerBlown))
+	transformerList.append(transformerBox.new(Vector2(5,1),3,playerMovement, transformerBlown))
+	transformerList.append(transformerBox.new(Vector2(6,1),4,playerMovement, transformerBlown))
+	transformerList.append(transformerBox.new(Vector2(8,1),5,playerMovement, transformerBlown))
+	transformerList.append(transformerBox.new(Vector2(9,1),6,playerMovement, transformerBlown))
+	
+	playerMovement[1][3] |= transformerBlown
+	playerMovement[1][5] |= transformerBlown
+	playerMovement[1][6] |= transformerBlown
+	
+	for trans in transformerList:
+		for sprite in trans.spriteGetter():
+			self.add_child(sprite)
+		
 	
 	spriteMap = []
 	for row in range(playerMovement.size()):
@@ -181,3 +201,41 @@ func load_sprite(stateString, row, col):
 func print_board():
 	for row in playerMovement:
 		print(row)
+		
+class transformerBox:
+	var pos
+	var brokenSprite
+	var fixedSprite
+	var playerMap
+	var blownTransformer
+	
+	func _init(position, transformerNum, playerMovement, transformerBlown):
+		pos = position
+		blownTransformer = transformerBlown
+		playerMap = playerMovement
+		brokenSprite = Sprite.new()
+		var spriteName = "res://img/brokenTrans/%s.png" % [transformerNum]
+		brokenSprite.set_texture(load(spriteName))
+		brokenSprite.set_pos(Vector2(brokenSprite.get_texture().get_width()/2,brokenSprite.get_texture().get_height()/2))
+		brokenSprite.set_opacity(0)
+		
+		fixedSprite = Sprite.new()
+		var spriteName = "res://img/fixedTrans/%s.png" % [transformerNum]
+		fixedSprite.set_texture(load(spriteName))
+		fixedSprite.set_pos(Vector2(fixedSprite.get_texture().get_width()/2,fixedSprite.get_texture().get_height()/2))
+		fixedSprite.set_opacity(1)
+		
+		
+		
+	func _update():
+		#check player map for state
+		#set sprite accordingly
+		if((playerMap[pos.y][pos.x] & blownTransformer) != 0):
+			self.brokenSprite.set_opacity(1)
+			self.fixedSprite.set_opacity(0)
+		else:
+			self.brokenSprite.set_opacity(0)
+			self.fixedSprite.set_opacity(1)
+	
+	func spriteGetter():
+		return [fixedSprite,brokenSprite]
