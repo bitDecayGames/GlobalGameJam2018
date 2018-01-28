@@ -103,7 +103,7 @@ func _process(delta):
 
 	if nextMove == up && playerPos.y == topOfPole && playerState == transformerItem:
 		soundMaker.play("plugin", false)
-		if(playerMovement[playerPos.y][playerPos.x] & transformerBlown):
+		if(playerMovement[playerPos.y][playerPos.x] & transformerBlown && !(playerMovement[playerPos.y][playerPos.x] & onFire)):
 			playerMovement[playerPos.y][playerPos.x] ^= transformerBlown 
 			
 		pass
