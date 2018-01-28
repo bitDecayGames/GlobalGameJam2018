@@ -28,6 +28,8 @@ func _process(delta):
 	if timeSinceLastFlap > TIME_BETWEEN_FLAPS:
 		toggle_wings()
 		timeSinceLastFlap = 0
+		if randf() > 0.05:
+			poop()
 		update()
 	
 	if timeSinceLastMove > TIME_BETWEEN_MOVES:
@@ -80,3 +82,8 @@ func move():
 			currentPosition -= 1
 		else:
 			currentPosition += 1
+			
+func poop():
+	print("pooping: ", currentPosition)
+	var poopNode = get_tree().get_root().get_node("/root/Node2D/playField/Poop")
+	poopNode.drop_deuce(currentPosition, 0.3)

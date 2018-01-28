@@ -40,9 +40,6 @@ class SingleTurd:
 				return true
 			else:
 				set_poop_flag()
-				for row in self.map:
-					print(row)
-				print("")
 		self.update_sprites()
 		return false
 		
@@ -92,7 +89,6 @@ func _ready():
 func load_sprite(stateString, row, col):
 	var s = Sprite.new()
 	var spriteName = "res://img/%s/%s/%s.png" % [stateString, row, col]
-	print("Loading sprite: %s" % spriteName)
 	s.set_texture(load(spriteName))
 	s.set_centered(false)
 	s.set_opacity(off)
