@@ -186,7 +186,7 @@ func checkDeath():
   elif(poopDeath):
     soundMaker.play("splat", false)
     var spriteToPassIn
-    spriteToPassIn = spriteMap[playerPos.y][playerPos.x][noItem]
+    spriteToPassIn = spriteMap[playerPos.y][playerPos.x][playerState]
     get_node("DeathNode").die(spriteToPassIn)
 		
 func transformerDeathCheck():
