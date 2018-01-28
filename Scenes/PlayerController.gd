@@ -2,6 +2,7 @@
 var soundMaker
 var playWalkNoiseOne = true
 var fireSound
+var score = 0000
 
 var fireStream
 
@@ -14,6 +15,8 @@ var onFire = 1 << 4
 var birdPoop = 1 << 5
 var transformerBlown = 1 << 6
 
+var difficultyMod = 1.0
+var difficultyIncrease = .01
 
 var up = Vector2(0, -1)
 var down = Vector2(0, 1)
@@ -57,6 +60,7 @@ var keyMap = {}
 func _process(delta):
 	var targetDir = stay
 	var nextMove = stay
+	
 	
 	if (Input.is_action_pressed(left_action) && !keyMap.has(left_action)):
 		keyMap[left_action] = true
@@ -105,12 +109,16 @@ func _process(delta):
 		soundMaker.play("plugin", false)
 		if(playerMovement[playerPos.y][playerPos.x] & transformerBlown && !(playerMovement[playerPos.y][playerPos.x] & onFire)):
 			playerMovement[playerPos.y][playerPos.x] ^= transformerBlown 
+			increaseDifficulty(difficultyIncrease)
+	
+
 			
 		pass
 	if nextMove == up && playerPos.y == topOfPole && playerState == extinguisherItem:
 		soundMaker.play("extinguish", false)
 		if(playerMovement[playerPos.y][playerPos.x] & onFire):
 			playerMovement[playerPos.y][playerPos.x] ^= onFire
+			increaseDifficulty(difficultyIncrease)
 		var stillOnFire = false
 		for tran in transformerList:
 			if playerMovement[tran.pos.y][tran.pos.x] & onFire:
@@ -239,6 +247,9 @@ func print_board():
 	for row in playerMovement:
 		print(row)
 	print()
+	
+func increaseDifficulty(increaseNum):
+	difficultyMod += increaseNum
 		
 class transformerBox:
 	var pos
