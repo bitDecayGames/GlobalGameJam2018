@@ -5,7 +5,7 @@ export var value = 123
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
-	pass
+	set_process(true)
 	
 func _draw():	
 	if value > 9999:
@@ -36,6 +36,7 @@ func _draw():
 		tens.value = int(s[2])
 		ones.value = int(s[3])
 	
-	
+func _process(delta):
+	update()
 	
 	

@@ -5,7 +5,7 @@ export var value = 6
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
-	pass
+	set_process(true)
 
 func _draw():
 	var segments = []
@@ -35,6 +35,9 @@ func _draw():
 		
 	for letter in segments:
 		show_segment(letter)
+
+func _process(delta):
+	update()
 		
 func get_segment(letter):
 		var sprite = "Segment" + letter
