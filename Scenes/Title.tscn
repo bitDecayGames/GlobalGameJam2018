@@ -1,25 +1,36 @@
-[gd_scene load_steps=5 format=1]
+[gd_scene load_steps=8 format=1]
 
-[ext_resource path="res://Scenes/Title_btn_start.gd" type="Script" id=1]
-[ext_resource path="res://Scenes/Title_btn_credits.gd" type="Script" id=2]
-[ext_resource path="res://sound/music/title.ogg" type="AudioStream" id=3]
-[ext_resource path="res://sound/music/music-player.gd" type="Script" id=4]
+[ext_resource path="res://font/visitor.ttf.fnt" type="BitmapFont" id=1]
+[ext_resource path="res://Scenes/Title_btn_start.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Title_btn_credits.gd" type="Script" id=3]
+[ext_resource path="res://sound/music/title.ogg" type="AudioStream" id=4]
+[ext_resource path="res://sound/music/music-player.gd" type="Script" id=5]
+[ext_resource path="res://sound/project-imported-sounds/hovermenu.smp" type="Sample" id=6]
+
+[sub_resource type="SampleLibrary" id=1]
+
+samples/hovermenu = {
+"db": -10.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 6 )
+}
 
 [node name="dummyNode_titleScreen" type="Node"]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="ButtonsContainer" type="VBoxContainer" parent="."]
 
 focus/ignore_mouse = false
 focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 421.0
-margin/top = 471.0
-margin/right = 1190.0
-margin/bottom = 873.0
+margin/left = 599.0
+margin/top = 546.0
+margin/right = 1024.0
+margin/bottom = 791.0
 alignment = 0
 
-[node name="MenuButton" type="MenuButton" parent="VBoxContainer"]
+[node name="Start" type="Button" parent="ButtonsContainer"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -27,39 +38,37 @@ size_flags/horizontal = 2
 size_flags/vertical = 3
 margin/left = 0.0
 margin/top = 0.0
-margin/right = 769.0
-margin/bottom = 199.0
+margin/right = 425.0
+margin/bottom = 120.0
+custom_fonts/font = ExtResource( 1 )
 toggle_mode = false
-click_on_press = true
-enabled_focus_mode = 0
+enabled_focus_mode = 2
 shortcut = null
 text = "Start"
-flat = true
-items = [  ]
-script/script = ExtResource( 1 )
+flat = false
+script/script = ExtResource( 2 )
 
-[node name="MenuButton 2" type="MenuButton" parent="VBoxContainer"]
+[node name="Credit" type="Button" parent="ButtonsContainer"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 3
 margin/left = 0.0
-margin/top = 203.0
-margin/right = 769.0
-margin/bottom = 402.0
+margin/top = 124.0
+margin/right = 425.0
+margin/bottom = 245.0
+custom_fonts/font = ExtResource( 1 )
 toggle_mode = false
-click_on_press = true
-enabled_focus_mode = 0
+enabled_focus_mode = 2
 shortcut = null
-text = "Credits"
-flat = true
-items = [  ]
-script/script = ExtResource( 2 )
+text = "Credit"
+flat = false
+script/script = ExtResource( 3 )
 
 [node name="StreamPlayer" type="StreamPlayer" parent="."]
 
-stream/stream = ExtResource( 3 )
+stream/stream = ExtResource( 4 )
 stream/play = false
 stream/loop = false
 stream/volume_db = 0.0
@@ -67,6 +76,23 @@ stream/autoplay = false
 stream/paused = false
 stream/loop_restart_time = 0.0
 stream/buffering_ms = 500
-script/script = ExtResource( 4 )
+script/script = ExtResource( 5 )
+
+[node name="SamplePlayer" type="SamplePlayer" parent="."]
+
+config/polyphony = 1
+config/samples = SubResource( 1 )
+default/volume_db = 0.0
+default/pitch_scale = 1.0
+default/pan = 0.0
+default/depth = 0.0
+default/height = 0.0
+default/filter/type = 0
+default/filter/cutoff = 5000.0
+default/filter/resonance = 1.0
+default/filter/gain = 1.0
+default/reverb_room = 2
+default/reverb_send = 0.0
+default/chorus_send = 0.0
 
 
