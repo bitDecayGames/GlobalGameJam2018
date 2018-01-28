@@ -108,9 +108,7 @@ func _process(delta):
     playerState = transformerItem
     soundMaker.play("pickup", false)
     transformer.set_opacity(off)
-  elif playerMovement[playerPos.y][playerPos.x] & onFire:
-    fireDeath = true
-    print("Fire", false)
+  
 
   if nextMove == up && playerPos.y == topOfPole && playerState == transformerItem:
     soundMaker.play("plugin", false)
@@ -120,6 +118,7 @@ func _process(delta):
       increaseDifficulty(difficultyIncrease)
 
     pass
+
   if nextMove == up && playerPos.y == topOfPole && playerState == extinguisherItem:
     soundMaker.play("extinguish", false)
     if(playerMovement[playerPos.y][playerPos.x] & onFire):
@@ -132,7 +131,10 @@ func _process(delta):
         stillOnFire = true
     if not stillOnFire:
       fireStream.stop()
-    pass
+  elif playerMovement[playerPos.y][playerPos.x] & onFire:
+      fireDeath = true
+      print("Fire", false)
+  pass
 
   if nextMove != stay && previousPos.y == topOfPole:
       extinguisher.set_opacity(lit)
