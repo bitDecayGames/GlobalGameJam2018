@@ -11,6 +11,7 @@ var timeSinceLastFlap = 0
 export var currentPosition = 0
 export var currentWingDirection = 'up'
 export var currentFacing = 'right'
+export var poopRate = 0.20
 
 func _draw():
 	for position in range(0, 10):
@@ -28,20 +29,20 @@ func _process(delta):
 	if timeSinceLastFlap > TIME_BETWEEN_FLAPS:
 		toggle_wings()
 		timeSinceLastFlap = 0
-		if randf() > 0.05:
-			poop()
 		update()
 	
 	if timeSinceLastMove > TIME_BETWEEN_MOVES:
 		# if randf() > 0.80:
 		#	toggle_facing()
+		if randf() > 1 - poopRate:
+			poop()
+		
 		move()
 		timeSinceLastMove = 0
 		update()
 	
 
 func _ready():
-	print("peanut butter birdy time!")
 	spriteMap = []
 	for position in range(0, 10):
 		spriteMap.append({})
@@ -84,6 +85,5 @@ func move():
 			currentPosition += 1
 			
 func poop():
-	print("pooping: ", currentPosition)
 	var poopNode = get_tree().get_root().get_node("/root/Node2D/playField/Poop")
 	poopNode.drop_deuce(currentPosition, 0.3)
