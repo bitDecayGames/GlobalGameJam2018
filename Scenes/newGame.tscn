@@ -50,7 +50,7 @@ samples/pause = {
 "sample": ExtResource( 8 )
 }
 samples/pickup = {
-"db": -25.0,
+"db": -10.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 9 )
