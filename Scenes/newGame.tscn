@@ -149,11 +149,8 @@ margin/bottom = 533.0
 
 [node name="Poop" parent="playField" instance=ExtResource( 5 )]
 
-transform/pos = Vector2( -490, -320 )
-
 [node name="SparkControlNode" type="Node2D" parent="playField"]
 
-visibility/visible = false
 script/script = ExtResource( 6 )
 
 [node name="bezel" type="Sprite" parent="."]
