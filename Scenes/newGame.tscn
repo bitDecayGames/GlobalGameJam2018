@@ -58,7 +58,7 @@ samples/extinguish = {
 "sample": ExtResource( 11 )
 }
 samples/fire = {
-"db": -29.0,
+"db": 0.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 12 )
@@ -192,7 +192,7 @@ script/script = ExtResource( 23 )
 stream/stream = ExtResource( 24 )
 stream/play = false
 stream/loop = false
-stream/volume_db = 0.0
+stream/volume_db = -10.0
 stream/autoplay = false
 stream/paused = false
 stream/loop_restart_time = 0.0
