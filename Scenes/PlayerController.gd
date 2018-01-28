@@ -61,7 +61,6 @@ func _process(delta):
 	var nextMove = stay
 	
 	if (Input.is_action_pressed(left_action) && !keyMap.has(left_action)):
-		print_board()
 		keyMap[left_action] = true
 		targetDir = left
 	elif (Input.is_action_pressed(right_action) && !keyMap.has(right_action)):
@@ -121,7 +120,7 @@ func _process(delta):
 			transformer.set_opacity(lit)
 			playerState = noItem
 
-	update_sprites()
+	update_sprites(delta)
 #	
 	for action in keyMap:
 		if !Input.is_action_pressed(action):
@@ -144,7 +143,7 @@ func play_walk_sound():
 		pass
 	playWalkNoiseOne = not playWalkNoiseOne
 
-func update_sprites():
+func update_sprites(delta):
 	for row in range(playerMovement.size()):
 		for col in range(playerMovement[row].size()):
 			if playerPos.x == col && playerPos.y == row:
@@ -158,7 +157,7 @@ func update_sprites():
 					spriteMap[row][col][state].set_opacity(off)
 					
 	for trans in transformerList:
-		trans._update()
+		trans._update(delta)
 
 func _ready():
 	set_process(true)
@@ -188,12 +187,12 @@ func _ready():
 	# set our player spawn
 	playerMovement[playerPos.y][playerPos.x] |= playerPresent
 	
-	transformerList.append(transformerBox.new(Vector2(2,1),1,playerMovement, transformerBlown))
-	transformerList.append(transformerBox.new(Vector2(3,1),2,playerMovement, transformerBlown))
-	transformerList.append(transformerBox.new(Vector2(5,1),3,playerMovement, transformerBlown))
-	transformerList.append(transformerBox.new(Vector2(6,1),4,playerMovement, transformerBlown))
-	transformerList.append(transformerBox.new(Vector2(8,1),5,playerMovement, transformerBlown))
-	transformerList.append(transformerBox.new(Vector2(9,1),6,playerMovement, transformerBlown))
+	transformerList.append(transformerBox.new(Vector2(2,1),1,playerMovement, transformerBlown, onFire))
+	transformerList.append(transformerBox.new(Vector2(3,1),2,playerMovement, transformerBlown, onFire))
+	transformerList.append(transformerBox.new(Vector2(5,1),3,playerMovement, transformerBlown, onFire))
+	transformerList.append(transformerBox.new(Vector2(6,1),4,playerMovement, transformerBlown, onFire))
+	transformerList.append(transformerBox.new(Vector2(8,1),5,playerMovement, transformerBlown, onFire))
+	transformerList.append(transformerBox.new(Vector2(9,1),6,playerMovement, transformerBlown, onFire))
 	
 	playerMovement[1][3] |= transformerBlown
 	playerMovement[1][5] |= transformerBlown
@@ -240,10 +239,18 @@ class transformerBox:
 	var fixedSprite
 	var playerMap
 	var blownTransformer
+	var fireTransformer
+	var largeFireSprite
+	var smallFireSprite
+	var fireToggle
+	var fireTime
 	
-	func _init(position, transformerNum, playerMovement, transformerBlown):
+	func _init(position, transformerNum, playerMovement, transformerBlown, transformerOnFire):
+		fireTime = 0.5
+		fireToggle = 0
 		pos = position
 		blownTransformer = transformerBlown
+		fireTransformer = transformerOnFire
 		playerMap = playerMovement
 		brokenSprite = Sprite.new()
 		var spriteName = "res://img/brokenTrans/%s.png" % [transformerNum]
@@ -255,17 +262,46 @@ class transformerBox:
 		fixedSprite.set_texture(load(spriteName))
 		fixedSprite.set_opacity(1)
 		
+		largeFireSprite = Sprite.new()
+		var spriteName = "res://img/fire/%sl.png" % [transformerNum]
+		largeFireSprite.set_texture(load(spriteName))
+		largeFireSprite.set_opacity(1)
 		
-		
-	func _update():
+		smallFireSprite = Sprite.new()
+		var spriteName = "res://img/fire/%ss.png" % [transformerNum]
+		smallFireSprite.set_texture(load(spriteName))
+		smallFireSprite.set_opacity(1)
+
+	func _update(delta):
 		#check player map for state
 		#set sprite accordingly
 		if((playerMap[pos.y][pos.x] & blownTransformer) != 0):
+			if((playerMap[pos.y][pos.x] & fireTransformer) != 0):
+				fireTime -= delta
+				if fireTime < 0:
+					if fireToggle % 3 == 0:
+						self.largeFireSprite.set_opacity(0)
+						self.smallFireSprite.set_opacity(0)
+					elif fireToggle % 3 == 1:
+						self.largeFireSprite.set_opacity(0)
+						self.smallFireSprite.set_opacity(1)
+					else:
+						self.largeFireSprite.set_opacity(1)
+						self.smallFireSprite.set_opacity(0)
+					fireTime = 0.5
+					fireToggle = (fireToggle + 1) % 3
+			else:
+				self.largeFireSprite.set_opacity(0)
+				self.smallFireSprite.set_opacity(0)
+				fireTime = 0.5
+
 			self.brokenSprite.set_opacity(1)
 			self.fixedSprite.set_opacity(0)
 		else:
+			self.largeFireSprite.set_opacity(0)
+			self.smallFireSprite.set_opacity(0)
 			self.brokenSprite.set_opacity(0)
 			self.fixedSprite.set_opacity(1)
-	
+			
 	func spriteGetter():
-		return [fixedSprite,brokenSprite]
+		return [fixedSprite,brokenSprite,largeFireSprite,smallFireSprite]

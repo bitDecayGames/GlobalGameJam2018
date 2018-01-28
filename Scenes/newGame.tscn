@@ -52,7 +52,7 @@ samples/pause = {
 "sample": ExtResource( 10 )
 }
 samples/pickup = {
-"db": -5.0,
+"db": -10.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 11 )
@@ -76,13 +76,13 @@ samples/unpause = {
 "sample": ExtResource( 14 )
 }
 samples/walk1 = {
-"db": -35.0,
+"db": -40.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 15 )
 }
 samples/walk2 = {
-"db": -35.0,
+"db": -40.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 16 )
