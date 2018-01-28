@@ -80,7 +80,3 @@ func move():
 			currentPosition -= 1
 		else:
 			currentPosition += 1
-		
-	
-	
-	
