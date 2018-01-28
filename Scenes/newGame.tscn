@@ -1,8 +1,90 @@
-[gd_scene load_steps=4 format=1]
+[gd_scene load_steps=18 format=1]
 
 [ext_resource path="res://img/background.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/PlayerController.gd" type="Script" id=2]
 [ext_resource path="res://img/bezel.png" type="Texture" id=3]
+[ext_resource path="res://sound/project-imported-sounds/birdchirp.smp" type="Sample" id=4]
+[ext_resource path="res://sound/project-imported-sounds/death.smp" type="Sample" id=5]
+[ext_resource path="res://sound/project-imported-sounds/extinguish.smp" type="Sample" id=6]
+[ext_resource path="res://sound/project-imported-sounds/fire.smp" type="Sample" id=7]
+[ext_resource path="res://sound/project-imported-sounds/pause.smp" type="Sample" id=8]
+[ext_resource path="res://sound/project-imported-sounds/pickup.smp" type="Sample" id=9]
+[ext_resource path="res://sound/project-imported-sounds/plugin.smp" type="Sample" id=10]
+[ext_resource path="res://sound/project-imported-sounds/takedamage.smp" type="Sample" id=11]
+[ext_resource path="res://sound/project-imported-sounds/unpause.smp" type="Sample" id=12]
+[ext_resource path="res://sound/project-imported-sounds/walk1.smp" type="Sample" id=13]
+[ext_resource path="res://sound/project-imported-sounds/walk2.smp" type="Sample" id=14]
+[ext_resource path="res://sound/music/main theme.ogg" type="AudioStream" id=15]
+[ext_resource path="res://sound/music/music-player.gd" type="Script" id=16]
+
+[sub_resource type="SampleLibrary" id=1]
+
+samples/birdchirp = {
+"db": -28.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 4 )
+}
+samples/death = {
+"db": -22.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 5 )
+}
+samples/extinguish = {
+"db": -15.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 6 )
+}
+samples/fire = {
+"db": -25.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 7 )
+}
+samples/pause = {
+"db": -25.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 8 )
+}
+samples/pickup = {
+"db": -25.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 9 )
+}
+samples/plugin = {
+"db": -25.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 10 )
+}
+samples/takedamage = {
+"db": -25.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 11 )
+}
+samples/unpause = {
+"db": -25.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 12 )
+}
+samples/walk1 = {
+"db": -40.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 13 )
+}
+samples/walk2 = {
+"db": -40.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 14 )
+}
 
 [node name="Node2D" type="Node2D"]
 
@@ -16,5 +98,34 @@ script/script = ExtResource( 2 )
 
 texture = ExtResource( 3 )
 centered = false
+
+[node name="SamplePlayer" type="SamplePlayer" parent="."]
+
+config/polyphony = 4
+config/samples = SubResource( 1 )
+default/volume_db = 0.0
+default/pitch_scale = 1.0
+default/pan = 0.0
+default/depth = 0.0
+default/height = 0.0
+default/filter/type = 0
+default/filter/cutoff = 5000.0
+default/filter/resonance = 1.0
+default/filter/gain = 1.0
+default/reverb_room = 2
+default/reverb_send = 0.0
+default/chorus_send = 0.0
+
+[node name="StreamPlayer" type="StreamPlayer" parent="."]
+
+stream/stream = ExtResource( 15 )
+stream/play = false
+stream/loop = false
+stream/volume_db = 0.0
+stream/autoplay = false
+stream/paused = false
+stream/loop_restart_time = 0.0
+stream/buffering_ms = 500
+script/script = ExtResource( 16 )
 
 
