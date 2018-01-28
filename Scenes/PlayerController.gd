@@ -1,7 +1,7 @@
 # These are the offest on the parent TextureFrame. Not sure how else to get this working
 const parent_offset_x = 308
 const parent_offset_y = 55
-var parentOffsetVector = Vector2(parent_offset_x, parent_offset_y)
+var parentOffsetVector = Vector2(0, 0)
 
 # Sound
 var soundMaker
@@ -152,7 +152,7 @@ func _ready():
 	
 	var backgroundLCDs = Sprite.new()
 	backgroundLCDs.set_texture(load("res://img/blankCells.png"))
-	backgroundLCDs.set_centered(false)
+#	backgroundLCDs.set_centered(false)
 #	backgroundLCDs.set_pos(Vector2(backgroundLCDs.get_texture().get_width()/2,backgroundLCDs.get_texture().get_height()/2))
 	backgroundLCDs.set_pos(parentOffsetVector)
 	backgroundLCDs.set_opacity(low)
@@ -160,7 +160,7 @@ func _ready():
 	
 	
 	extinguisher.set_texture(load("res://img/fireExtinguisher.png"))
-	extinguisher.set_centered(false)
+#	extinguisher.set_centered(false)
 #	extinguisher.set_pos(Vector2(extinguisher.get_texture().get_width()/2, extinguisher.get_texture().get_height()/2))
 	extinguisher.set_pos(parentOffsetVector)
 	extinguisher.set_opacity(lit)
