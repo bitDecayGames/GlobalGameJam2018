@@ -69,6 +69,7 @@ func _process(delta):
 		targetDir = down
 
 	if(_can_Move(playerPos, targetDir)):
+			
 			nextMove = targetDir
 
 	# Remove mask from leaving position
