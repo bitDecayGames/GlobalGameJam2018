@@ -89,11 +89,15 @@ func _process(delta):
 			
 	# interactions
 	if playerMovement[playerPos.y][playerPos.x] & extinguisherSpawned && playerState != extinguisherItem:
+		if(playerState == transformerItem):
+			transformer.set_opacity(lit)
 		playerState = extinguisherItem
 		soundMaker.play("pickup")
 		#playerMovement[playerPos.y][playerPos.x] ^= extinguisherSpawned
 		extinguisher.set_opacity(off)
 	elif playerMovement[playerPos.y][playerPos.x] & transformerSpawned && playerState != transformerItem:
+		if(playerState == extinguisherItem):
+			extinguisher.set_opacity(lit)
 		playerState = transformerItem
 		soundMaker.play("pickup")
 		transformer.set_opacity(off)
