@@ -63,7 +63,7 @@ tracks/4/path = NodePath("ButtonsContainer/Start:focus/ignore_mouse")
 tracks/4/interp = 1
 tracks/4/imported = false
 tracks/4/keys = {
-"times": FloatArray( 0, 10 ),
+"times": FloatArray( 0, 9.1 ),
 "transitions": FloatArray( 1, 1 ),
 "update": 1,
 "values": [ true, false ]
@@ -73,7 +73,7 @@ tracks/5/path = NodePath("ButtonsContainer/Credit:focus/ignore_mouse")
 tracks/5/interp = 1
 tracks/5/imported = false
 tracks/5/keys = {
-"times": FloatArray( 0, 10 ),
+"times": FloatArray( 0, 9.1 ),
 "transitions": FloatArray( 1, 1 ),
 "update": 1,
 "values": [ true, false ]
