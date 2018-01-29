@@ -445,7 +445,7 @@ func game_Over():
 	soundMaker.stop_all()
 	fireStream.stop()
 	get_tree().get_root().get_node("/root/Node2D/StreamPlayer").stop()
-	soundMaker.play("death")
+#	soundMaker.play("death")
 	get_tree().change_scene("res://Scenes/GameOver.tscn")
 
 
