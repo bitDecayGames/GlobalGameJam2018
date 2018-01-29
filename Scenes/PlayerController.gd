@@ -430,6 +430,7 @@ func print_board():
   print()
 
 func resetPlayer():
+  fireStream.stop()
   for trans in transformerList:
     if(playerMovement[trans.pos.y][trans.pos.x] & onFire):
        playerMovement[trans.pos.y][trans.pos.x] ^= onFire
