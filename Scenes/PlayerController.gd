@@ -67,6 +67,12 @@ var transformerDeath = false
 const TRANSFORMER_DEATH_SPRITE = ""
 const LIGHTNING_IMAGE_DIRECTORY = "res://img/lightning/"
 
+const no_lightning_limit = 200
+var lighting_strike_chance = 0.9995
+var lightning_chance_increment = 0.00005
+var lightning_difficulty_chance = 0
+var lightning_score_jump_size = 500
+
 const FLAMBE_IMAGE_DIRECTORY = "res://img/flambe/"
 var fireDeath = false
 var fireDeathSpriteList = []
@@ -77,6 +83,7 @@ var poopDeath = false
 var keyMap = {}
 
 func _process(delta):
+	
   transformerDeathCheck()
   poopDeathCheck()
   checkDeath()
@@ -157,7 +164,8 @@ func _process(delta):
       playerState = noItem
 
   var score = get_tree().get_root().get_node("/root/Node2D/playField/Score")
-  if score.value >= 50:
+  lightning_difficulty_chance = lightning_chance_increment * (score / lightning_score_jump_size)
+  if score.value >= no_lightning_limit:
     lightningHits(delta)
 
   update_sprites(delta)
@@ -173,7 +181,7 @@ func lightningHits(delta):
 		for i in range(lightningSpriteList.size()):
 			lightningSpriteList[i].set_opacity(0)
 		var chance = randf()
-		if chance > 0.9995:
+		if chance > lighting_strike_chance - lightning_difficulty_chance:
 			timeLightningHit = 0.5
 			var transformerNumber = randi() % 6
 			lightningSpriteList[transformerNumber].set_opacity(1)
