@@ -63,6 +63,8 @@ var scoreControl
 
 var gameOver
 
+var gameoverYes = false
+
 var transformerDeath = false
 const TRANSFORMER_DEATH_SPRITE = ""
 const LIGHTNING_IMAGE_DIRECTORY = "res://img/lightning/"
@@ -83,7 +85,10 @@ var poopDeath = false
 var keyMap = {}
 
 func _process(delta):
-	
+
+  if gameoverYes:
+    get_tree().change_scene("res://Scenes/GameOver.tscn")
+
   transformerDeathCheck()
   poopDeathCheck()
   checkDeath()
@@ -164,7 +169,7 @@ func _process(delta):
       playerState = noItem
 
   var score = get_tree().get_root().get_node("/root/Node2D/playField/Score")
-  lightning_difficulty_chance = lightning_chance_increment * (score / lightning_score_jump_size)
+  lightning_difficulty_chance = lightning_chance_increment * (score.value / lightning_score_jump_size)
   if score.value >= no_lightning_limit:
     lightningHits(delta)
 
@@ -432,6 +437,7 @@ func print_board():
   print()
 
 func resetPlayer():
+  fireStream.stop()
   for trans in transformerList:
     if(playerMovement[trans.pos.y][trans.pos.x] & onFire):
        playerMovement[trans.pos.y][trans.pos.x] ^= onFire
@@ -451,8 +457,9 @@ func game_Over():
 	soundMaker.stop_all()
 	fireStream.stop()
 	get_tree().get_root().get_node("/root/Node2D/StreamPlayer").stop()
-	soundMaker.play("death")
-	get_tree().change_scene("res://Scenes/GameOver.tscn")
+	if !gameoverYes:
+		soundMaker.play("death")
+		gameoverYes = true
 
 
 func increment_score():
