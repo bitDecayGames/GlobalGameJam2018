@@ -180,6 +180,8 @@ func lightningHits(delta):
 			playerMovement[1][lightningToTransformer[transformerNumber]] |= transformerBlown
 			playerMovement[1][lightningToTransformer[transformerNumber]] |= onFire
 			print(playerMovement)
+			fireStream.stop()
+			fireStream.play()
 
 func _can_Move(currentPos,moveDir):
   var destPos = Vector2(currentPos.x, currentPos.y) + moveDir

@@ -155,8 +155,6 @@ margin/bottom = 533.0
 
 [node name="Bird" parent="playField" instance=ExtResource( 4 )]
 
-poopRate = 0.2
-
 [node name="Poop" parent="playField" instance=ExtResource( 5 )]
 
 [node name="SparkControlNode" type="Node2D" parent="playField"]
