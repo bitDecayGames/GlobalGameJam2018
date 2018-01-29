@@ -303,6 +303,9 @@ func _ready():
   playerMovement = get_node("/root/global").get("playerMovement")
   scoreControl = get_node("Score")
   scoreControl.value = 0
+  get_node("Bird").landRate = 0.75
+  get_node("Bird").poopRate = 0.4
+
 
   load_lives()
 
@@ -456,6 +459,10 @@ func decrease_lives():
 
 func increaseDifficulty(increaseNum):
   difficultyMod += increaseNum
+  if scoreControl.value > 500:
+    get_node("Bird").landRate = 0.75
+  if scoreControl.value > 1000:
+    get_node("Bird").poopRate = 0.4
 
 class transformerBox:
   var pos
