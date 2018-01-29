@@ -162,9 +162,12 @@ func _process(delta):
       transformer.set_opacity(lit)
       playerState = noItem
 
-  lightningHits(delta)
+  var score = get_tree().get_root().get_node("/root/Node2D/playField/Score")
+  if score.value >= 50:
+    lightningHits(delta)
+
   update_sprites(delta)
-#
+
   for action in keyMap:
     if !Input.is_action_pressed(action):
       keyMap.erase(action)
@@ -188,7 +191,7 @@ func lightningHits(delta):
 
 func _can_Move(currentPos,moveDir):
   var destPos = Vector2(currentPos.x, currentPos.y) + moveDir
-  if(playerMovement[destPos.y][destPos.x] != 0):
+  if(playerMovement[destPos.y][destPos.x] & moveableSpace):
     return true
   else:
     return false
