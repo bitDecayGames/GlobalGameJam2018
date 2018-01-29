@@ -340,16 +340,6 @@ func _ready():
   transformerList.append(transformerBox.new(Vector2(8,1),5,playerMovement, transformerBlown, onFire))
   transformerList.append(transformerBox.new(Vector2(9,1),6,playerMovement, transformerBlown, onFire))
 
-  playerMovement[1][3] |= transformerBlown
-  playerMovement[1][5] |= transformerBlown
-  playerMovement[1][6] |= transformerBlown
-
-#  playerMovement[1][2] |= transformerBlown
-#  playerMovement[1][8] |= transformerBlown
-#  playerMovement[1][9] |= transformerBlown
-
-  playerMovement[1][6] |= onFire
-
   for trans in transformerList:
     for sprite in trans.spriteGetter():
       self.add_child(sprite)
@@ -431,6 +421,11 @@ func print_board():
   print()
 
 func resetPlayer():
+  for trans in transformerList:
+    if(playerMovement[trans.pos.y][trans.pos.x] & onFire):
+       playerMovement[trans.pos.y][trans.pos.x] ^= onFire
+    if(playerMovement[trans.pos.y][trans.pos.x] & transformerBlown):
+       playerMovement[trans.pos.y][trans.pos.x] ^= transformerBlown
   playerPos = Vector2(3, groundRow)
   playerMovement[playerPos.y][playerPos.x] |= playerPresent
   extinguisher.set_opacity(lit)
